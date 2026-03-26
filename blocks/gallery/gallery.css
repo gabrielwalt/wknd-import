@@ -150,7 +150,7 @@
 }
 
 @media (width < 900px) {
-  .gallery {
+  .gallery-container {
     --gallery-img-height: 200px;
     --gallery-wide-height: 240px;
   }

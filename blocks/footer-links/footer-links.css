@@ -1,10 +1,12 @@
+/* stylelint-disable no-descending-specificity -- block uses progressive specificity for decorated DOM */
+
 .footer-links-wrapper {
   padding: 0 !important;
 }
 
 .footer-links {
-  --footer-text: rgb(153, 153, 153);
-  --footer-heading: rgb(153, 153, 153);
+  --footer-text: rgb(153 153 153);
+  --footer-heading: rgb(153 153 153);
   --footer-logo-text: #fff;
   --footer-gap: var(--gap-xl);
 }

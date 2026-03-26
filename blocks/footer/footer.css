@@ -60,7 +60,6 @@ footer h4 {
   letter-spacing: 0.7px;
   color: #999;
   margin: 0 0 16px;
-  text-transform: uppercase;
 }
 
 /* Column link lists */
@@ -108,7 +107,6 @@ footer .footer-logo-text {
   font-weight: 700;
   letter-spacing: 0.6px;
   line-height: 1.2;
-  text-transform: uppercase;
 }
 
 /* Tagline below brand */

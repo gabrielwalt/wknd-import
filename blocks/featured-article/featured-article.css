@@ -1,3 +1,5 @@
+/* stylelint-disable no-descending-specificity -- block uses progressive specificity for decorated DOM */
+
 /* Featured Article Block */
 .featured-article {
   --fa-bg: var(--light-color);

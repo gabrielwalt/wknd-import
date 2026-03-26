@@ -178,7 +178,6 @@ h6 {
   line-height: 1.1;
   scroll-margin: 40px;
   letter-spacing: -0.02em;
-  text-transform: uppercase;
 }
 
 h1 { font-size: var(--heading-font-size-xxl); }
@@ -273,7 +272,7 @@ blockquote {
 
 blockquote p {
   margin-bottom: 8px;
-  color: var(--text-color);
+  color: var(--text-color-subtle);
 }
 
 blockquote p:last-child {
@@ -361,7 +360,6 @@ button.button {
   font-family: var(--button-font-family);
   font-size: var(--button-font-size);
   font-weight: var(--button-font-weight);
-  text-transform: uppercase;
   letter-spacing: var(--button-letter-spacing);
   line-height: 1.25;
   text-decoration: none;
@@ -625,7 +623,6 @@ main .section.accent > div > p:first-child {
   font-family: var(--heading-font-family);
   font-size: 14px;
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: 1.4px;
 }
 
@@ -684,7 +681,6 @@ a.text-link {
   font-size: var(--body-font-size-s);
   font-weight: 700;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
   text-decoration: none;
   color: var(--accent-color);
   padding: 0;

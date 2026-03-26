@@ -172,7 +172,6 @@ header .nav-logo-text {
   font-weight: 700;
   letter-spacing: 0.6px;
   line-height: 1.2;
-  text-transform: uppercase;
 }
 
 header nav .nav-brand img {
@@ -390,7 +389,6 @@ header .nav-megamenu-label {
   letter-spacing: 1.12px;
   color: var(--text-color-muted);
   margin: 0 0 8px;
-  text-transform: uppercase;
 }
 
 /* ----------------------------------------------------------------
@@ -415,7 +413,6 @@ header .nav-subscribe {
   font-weight: var(--button-font-weight);
   letter-spacing: var(--button-letter-spacing);
   text-decoration: none;
-  text-transform: uppercase;
   white-space: nowrap;
   line-height: 1;
   box-shadow: 3px 3px 0 0 var(--accent-color);
@@ -444,7 +441,6 @@ header nav .nav-tools a {
   font-size: var(--button-font-size);
   font-weight: var(--button-font-weight);
   text-decoration: none;
-  text-transform: uppercase;
   letter-spacing: var(--button-letter-spacing);
   white-space: nowrap;
   line-height: 1;
@@ -751,7 +747,6 @@ header nav .nav-tools a:hover {
     font-weight: 700;
     color: var(--text-color-muted);
     letter-spacing: 0.08em;
-    text-transform: uppercase;
     margin: 0 0 12px;
     padding: 0 16px;
   }

@@ -224,7 +224,6 @@
   font-size: var(--body-font-size-s);
   font-weight: 700;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
   text-decoration: none;
   padding: 12px 28px;
   background-color: var(--dark-color);

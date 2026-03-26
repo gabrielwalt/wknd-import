@@ -1,6 +1,12 @@
+/* stylelint-disable no-descending-specificity -- consolidated variant file */
+
 /* Hero block — base (full-bleed overlay) + variants (hero-article, hero-centered) */
 
-/* Shared: full-bleed container */
+/* Shared: full-bleed container — no section padding on hero */
+main > .hero-container {
+  padding: 0;
+}
+
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -15,7 +21,7 @@
   position: relative;
   display: flex;
   align-items: flex-end;
-  min-height: min(55vh, 400px);
+  min-height: min(65vh, 400px);
   padding: 48px 24px;
   overflow: hidden;
   color: var(--text-on-dark);
@@ -82,7 +88,6 @@
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 1.4px;
-  text-transform: uppercase;
   color: var(--accent-color);
   margin-bottom: var(--gap-md);
 }
@@ -122,7 +127,6 @@ main .hero a.button:any-link {
   font-family: var(--button-font-family);
   font-size: var(--button-font-size);
   font-weight: var(--button-font-weight);
-  text-transform: uppercase;
   letter-spacing: var(--button-letter-spacing);
   line-height: 1.25;
   text-decoration: none;
@@ -156,13 +160,12 @@ main .hero a.button.primary:any-link:hover,
   filter: brightness(0.9);
 }
 
-/* ghost / secondary button on hero — white outline */
+/* ghost / secondary button on hero — white outline, dark shadow */
 .hero a.button.secondary,
 main .hero a.button.secondary:any-link {
   background: transparent;
   border: 2px solid rgb(255 255 255 / 50%);
   color: var(--background-color);
-  box-shadow: none;
 }
 
 .hero a.button.secondary:hover,
@@ -174,7 +177,7 @@ main .hero a.button.secondary:any-link:hover {
 
 @media (width >= 600px) {
   .hero {
-    min-height: min(55vh, 500px);
+    min-height: min(65vh, 500px);
     padding: 64px 24px;
   }
 
@@ -185,7 +188,7 @@ main .hero a.button.secondary:any-link:hover {
 
 @media (width >= 900px) {
   .hero {
-    min-height: 55vh;
+    min-height: 65vh;
     padding: 64px 32px;
   }
 
@@ -200,7 +203,6 @@ main .hero a.button.secondary:any-link:hover {
   min-height: min(55vh, 380px);
 }
 
-/* stylelint-disable no-descending-specificity -- variant resets base paragraph/eyebrow styles */
 .hero.hero-article p {
   font-size: inherit;
   line-height: inherit;
