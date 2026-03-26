@@ -131,6 +131,10 @@
   margin-bottom: 0.8em;
 }
 
+.accordion-faq details summary p {
+  margin: 0;
+}
+
 /* --- Question (summary) — flex layout with plus icon --- */
 .accordion-faq details summary {
   position: relative;

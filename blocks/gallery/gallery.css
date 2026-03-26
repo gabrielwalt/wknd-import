@@ -6,7 +6,7 @@
  */
 
 /* --- Local design tokens (from boilerplate, mapped to wknd-import tokens) --- */
-.gallery {
+.gallery-container {
   --gallery-gap: var(--gap-lg, 24px);
   --gallery-radius: var(--card-border-radius, 20px);
   --gallery-img-height: 280px;

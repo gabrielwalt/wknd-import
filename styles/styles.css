@@ -1,3 +1,5 @@
+/* stylelint-disable no-descending-specificity -- consolidated variant file */
+
 /*
  * WKND Adventures - Edge Delivery Services
  * Design system migrated from https://gabrielwalt.github.io/wknd/
@@ -511,6 +513,7 @@ main .section.highlight {
 main > .section.dark {
   background-color: var(--dark-color);
   color: var(--background-color);
+
   --btn-shadow: var(--accent-color);
 }
 
@@ -540,9 +543,9 @@ main > .section.dark a.button.primary {
 
 /* dark section: ghost button uses white outline */
 main > .section.dark a.button.secondary {
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: rgb(255 255 255 / 50%);
   background-color: transparent;
-  color: rgb(255, 255, 255);
+  color: rgb(255 255 255);
 }
 
 main > .section.dark a.button.secondary:hover {
@@ -561,6 +564,7 @@ main > .section.accent {
   background-color: var(--accent-color);
   color: var(--dark-color);
   text-align: center;
+
   --btn-shadow: #fff;
 }
 
@@ -598,7 +602,6 @@ main > .section.accent a.button.primary {
   color: var(--background-color);
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
 main > .section.accent a.button.secondary {
   border-color: var(--dark-color);
   color: var(--dark-color);
@@ -643,13 +646,11 @@ main .section.dark.narrow h2 {
 /* --- ARTICLE BODY --- */
 
 /* article body — narrow reading column after hero-article */
-/* stylelint-disable-next-line no-descending-specificity */
 .hero-container:has(.hero-article) + .section > div {
   max-width: var(--container-narrow-max-width);
 }
 
 /* image captions in article body */
-/* stylelint-disable-next-line no-descending-specificity */
 .hero-container:has(.hero-article) + .section > div > p:has(> img) + p {
   font-size: var(--body-font-size-s);
   color: var(--text-color-muted);
@@ -664,6 +665,11 @@ main .section.dark.narrow h2 {
   flex-wrap: wrap;
   gap: 12px;
   margin: 12px 0;
+}
+
+.section.accent .button-group,
+.section.dark .button-group {
+  justify-content: center;
 }
 
 main .default-content-wrapper .button-group p.button-wrapper {
@@ -747,7 +753,7 @@ main > .section.dark .subsection-default a.text-link {
   color: var(--accent-color);
 }
 
-main > .section.dark .subsection-default a:any-link:not(.button):not(.text-link) {
+main > .section.dark .subsection-default a:any-link:not(.button, .text-link) {
   color: var(--accent-color);
 }
 
