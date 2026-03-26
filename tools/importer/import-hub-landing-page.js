@@ -19,9 +19,6 @@ const PAGE_TEMPLATE = {
   description: 'Category hub page with hero, featured spotlight, category cards/grid, educational content, and cross-promotion links',
   urls: [
     'https://gabrielwalt.github.io/wknd/adventures.html',
-    'https://gabrielwalt.github.io/wknd/expeditions.html',
-    'https://gabrielwalt.github.io/wknd/destinations.html',
-    'https://gabrielwalt.github.io/wknd/gear.html',
   ],
   blocks: [
     {

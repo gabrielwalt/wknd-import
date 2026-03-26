@@ -17,10 +17,10 @@ var CustomImportScript = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // tools/importer/import-hub-landing-page.js
-  var import_hub_landing_page_exports = {};
-  __export(import_hub_landing_page_exports, {
-    default: () => import_hub_landing_page_default
+  // tools/importer/import-expedition-gear-page.js
+  var import_expedition_gear_page_exports = {};
+  __export(import_expedition_gear_page_exports, {
+    default: () => import_expedition_gear_page_default
   });
 
   // tools/importer/parsers/hero-full.js
@@ -128,101 +128,35 @@ var CustomImportScript = (() => {
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/cards-article.js
+  // tools/importer/parsers/cards-feature.js
   function parse5(element, { document: document2 }) {
-    const cards = element.querySelectorAll(".article-card");
     const cells = [];
+    const cards = element.querySelectorAll(".feature-card");
     cards.forEach((card) => {
-      const img = card.querySelector(".article-card-image img");
-      const col1 = document2.createElement("div");
-      if (img) {
-        col1.appendChild(img.cloneNode(true));
-      }
-      const col2 = document2.createElement("div");
-      const tag = card.querySelector(".tag");
-      if (tag) {
-        const tagP = document2.createElement("p");
-        tagP.textContent = tag.textContent.trim();
-        col2.appendChild(tagP);
-      }
-      const title = card.querySelector("h3, h5");
-      if (title) {
+      const row = document2.createElement("div");
+      const heading = card.querySelector("h3");
+      if (heading) {
         const h3 = document2.createElement("h3");
-        h3.textContent = title.textContent.trim();
-        col2.appendChild(h3);
+        h3.textContent = heading.textContent.trim();
+        row.appendChild(h3);
       }
-      const desc = card.querySelector(".paragraph-sm");
+      const desc = card.querySelector("p");
       if (desc) {
-        const descP = document2.createElement("p");
-        descP.textContent = desc.textContent.trim();
-        col2.appendChild(descP);
+        const p = document2.createElement("p");
+        p.textContent = desc.textContent.trim();
+        row.appendChild(p);
       }
-      const authorDate = card.querySelector(".utility-text-secondary");
-      if (authorDate) {
-        const authorP = document2.createElement("p");
-        authorP.innerHTML = `<em>${authorDate.textContent.trim()}</em>`;
-        col2.appendChild(authorP);
-      }
-      const href = card.getAttribute("href");
-      if (href) {
-        const linkP = document2.createElement("p");
+      const link = card.querySelector("a");
+      if (link) {
         const a = document2.createElement("a");
-        a.href = href;
-        a.textContent = "Read More";
-        linkP.appendChild(a);
-        col2.appendChild(linkP);
+        a.href = link.href;
+        a.textContent = link.textContent.trim();
+        row.appendChild(a);
       }
-      cells.push([col1, col2]);
+      cells.push([row]);
     });
     const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Cards (cards-article)",
-      cells
-    });
-    element.replaceWith(block);
-  }
-
-  // tools/importer/parsers/columns-promo.js
-  function parse6(element, { document: document2 }) {
-    const cells = [];
-    const cards = element.querySelectorAll(".card");
-    if (cards.length > 0) {
-      const row = [];
-      cards.forEach((card) => {
-        const col = document2.createElement("div");
-        const eyebrow = card.querySelector(".hero-eyebrow");
-        if (eyebrow) {
-          const p = document2.createElement("p");
-          p.innerHTML = `<em>${eyebrow.textContent.trim()}</em>`;
-          col.appendChild(p);
-        }
-        const heading = card.querySelector("h3");
-        if (heading) {
-          const h3 = document2.createElement("h3");
-          h3.textContent = heading.textContent.trim();
-          col.appendChild(h3);
-        }
-        const desc = card.querySelector(".paragraph-lg");
-        if (desc) {
-          const p = document2.createElement("p");
-          p.textContent = desc.textContent.trim();
-          col.appendChild(p);
-        }
-        const link = card.querySelector('a[class*="button"]');
-        if (link) {
-          const p = document2.createElement("p");
-          const a = document2.createElement("a");
-          a.href = link.getAttribute("href");
-          const label = link.querySelector(".button-label");
-          a.textContent = label ? label.textContent.trim() : link.textContent.trim();
-          p.appendChild(a);
-          col.appendChild(p);
-        }
-        row.push(col);
-      });
-      cells.push(row);
-    }
-    const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Columns (columns-promo)",
+      name: "Cards (cards-feature)",
       cells
     });
     element.replaceWith(block);
@@ -288,21 +222,26 @@ var CustomImportScript = (() => {
     }
   }
 
-  // tools/importer/import-hub-landing-page.js
+  // tools/importer/import-expedition-gear-page.js
   var PAGE_TEMPLATE = {
-    name: "hub-landing-page",
-    description: "Category hub page with hero, featured spotlight, category cards/grid, educational content, and cross-promotion links",
+    name: "expedition-gear-page",
+    description: "Expedition/gear page with hero, tagline, featured article, activity tabs, wide content tabs, editorial index, gear lists, feature cards, and CTA",
     urls: [
-      "https://gabrielwalt.github.io/wknd/adventures.html"
+      "https://gabrielwalt.github.io/wknd/expeditions.html",
+      "https://gabrielwalt.github.io/wknd/gear.html"
     ],
     blocks: [
       {
         name: "hero",
-        instances: ["section.hero-section.hero-section--full", "section.hero-section"]
+        instances: ["section.hero-section"]
       },
       {
         name: "columns-featured",
         instances: [".featured-article"]
+      },
+      {
+        name: "tabs",
+        instances: ["section.section:not(:has(.tab-container)):has(.tab-menu)"]
       },
       {
         name: "tabs-activity",
@@ -313,88 +252,92 @@ var CustomImportScript = (() => {
         instances: [".editorial-index"]
       },
       {
-        name: "cards-article",
-        instances: [".grid-layout.desktop-3-column.grid-gap-lg:has(.article-card)"]
-      },
-      {
-        name: "columns-promo",
-        instances: [".grid-layout.grid-layout--2col"]
+        name: "cards-feature",
+        instances: [".grid-layout.desktop-3-column.grid-gap-lg:has(.feature-card)"]
       }
     ],
     sections: [
       {
         id: "section-1",
         name: "Hero",
-        selector: "section.hero-section.hero-section--full",
+        selector: "section.hero-section",
         style: "dark",
         blocks: ["hero"],
         defaultContent: []
       },
       {
         id: "section-2",
-        name: "Accent Banner",
-        selector: "section.section.accent-section",
+        name: "Accent Tagline",
+        selector: "section:nth-of-type(2)",
         style: "accent",
         blocks: [],
-        defaultContent: ["h2.h2-heading", "p.paragraph-xl"]
+        defaultContent: ["h2", "p"]
       },
       {
         id: "section-3",
         name: "Featured Article",
-        selector: "section.section.secondary-section:has(.featured-article)",
+        selector: "section:nth-of-type(3)",
         style: "secondary",
         blocks: ["columns-featured"],
         defaultContent: []
       },
       {
         id: "section-4",
-        name: "Browse by Activity",
-        selector: "section.section:has(.tab-container)",
+        name: "Activity Tabs",
+        selector: "section:nth-of-type(4)",
         style: null,
-        blocks: ["tabs-activity"],
-        defaultContent: ["h2.section-heading"]
+        blocks: ["tabs"],
+        defaultContent: ["h2"]
       },
       {
         id: "section-5",
-        name: "Choosing Your Adventure",
-        selector: "section.section.secondary-section:has(.container--narrow):not(:has(.featured-article)):not(:has(.editorial-index))",
+        name: "Wide Tabs + Editorial",
+        selector: "section:nth-of-type(5)",
         style: "secondary",
-        blocks: [],
-        defaultContent: ["h2.h2-heading", "p.paragraph-lg"]
+        blocks: ["tabs-activity"],
+        defaultContent: ["h2", "p"]
       },
       {
         id: "section-6",
-        name: "Recent Reports",
-        selector: "section.section:has(.grid-gap-lg > .article-card)",
+        name: "Editorial Index",
+        selector: "section:nth-of-type(6)",
         style: null,
-        blocks: ["cards-article"],
-        defaultContent: ["h2.section-heading"]
+        blocks: ["columns-numbered"],
+        defaultContent: ["h2"]
       },
       {
         id: "section-7",
-        name: "Adventure by Skill Level",
-        selector: "section.section.secondary-section:has(.editorial-index)",
+        name: "Gear Lists",
+        selector: "section:nth-of-type(7)",
         style: "secondary",
-        blocks: ["columns-numbered", "columns-promo"],
-        defaultContent: ["h2.section-heading"]
+        blocks: [],
+        defaultContent: ["h2", "h3", "p", "ul"]
       },
       {
         id: "section-8",
-        name: "Gear CTA",
-        selector: "section.section.inverse-section",
+        name: "Feature Cards",
+        selector: "section:nth-of-type(8)",
         style: "dark",
+        blocks: ["cards-feature"],
+        defaultContent: ["h2"]
+      },
+      {
+        id: "section-9",
+        name: "CTA",
+        selector: "section:nth-of-type(9)",
+        style: "accent",
         blocks: [],
-        defaultContent: ["h2.h2-heading", "p.paragraph-lg", "a.button"]
+        defaultContent: ["h2", "p", ".button-group"]
       }
     ]
   };
   var parsers = {
     "hero": parse,
     "columns-featured": parse2,
+    "tabs": parse3,
     "tabs-activity": parse3,
     "columns-numbered": parse4,
-    "cards-article": parse5,
-    "columns-promo": parse6
+    "cards-feature": parse5
   };
   var transformers = [
     transform,
@@ -434,7 +377,7 @@ var CustomImportScript = (() => {
     console.log(`Found ${pageBlocks.length} block instances on page`);
     return pageBlocks;
   }
-  var import_hub_landing_page_default = {
+  var import_expedition_gear_page_default = {
     transform: (payload) => {
       const { document: document2, url, html, params } = payload;
       const main = document2.body;
@@ -472,5 +415,5 @@ var CustomImportScript = (() => {
       }];
     }
   };
-  return __toCommonJS(import_hub_landing_page_exports);
+  return __toCommonJS(import_expedition_gear_page_exports);
 })();

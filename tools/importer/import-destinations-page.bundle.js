@@ -17,10 +17,10 @@ var CustomImportScript = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // tools/importer/import-hub-landing-page.js
-  var import_hub_landing_page_exports = {};
-  __export(import_hub_landing_page_exports, {
-    default: () => import_hub_landing_page_default
+  // tools/importer/import-destinations-page.js
+  var import_destinations_page_exports = {};
+  __export(import_destinations_page_exports, {
+    default: () => import_destinations_page_default
   });
 
   // tools/importer/parsers/hero-full.js
@@ -55,81 +55,8 @@ var CustomImportScript = (() => {
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/columns-featured.js
-  function parse2(element, { document: document2 }) {
-    const image = element.querySelector(".featured-article-image img, :scope > a img");
-    const tag = element.querySelector(".tag");
-    const heading = element.querySelector("h2, .h2-heading");
-    const description = element.querySelector(".paragraph-lg");
-    const avatar = element.querySelector(".avatar img");
-    const bylineName = element.querySelector(".article-byline-name");
-    const bylineMeta = element.querySelector(".article-byline-meta");
-    const contentCol = [];
-    if (tag) contentCol.push(tag);
-    if (heading) contentCol.push(heading);
-    if (description) contentCol.push(description);
-    if (avatar || bylineName || bylineMeta) {
-      const bylineP = document2.createElement("p");
-      if (avatar) bylineP.append(avatar);
-      if (bylineName) bylineP.append(document2.createTextNode(" " + bylineName.textContent));
-      if (bylineMeta) {
-        bylineP.append(document2.createElement("br"));
-        bylineP.append(document2.createTextNode(bylineMeta.textContent));
-      }
-      contentCol.push(bylineP);
-    }
-    const ctaLink = element.querySelector(".featured-article-footer > a, .article-byline + a");
-    if (ctaLink) {
-      const label = ctaLink.querySelector(".button-label");
-      if (label) ctaLink.textContent = label.textContent.trim();
-      contentCol.push(ctaLink);
-    }
-    const cells = [
-      [image || "", contentCol]
-    ];
-    const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Columns (columns-featured)",
-      cells
-    });
-    element.replaceWith(block);
-  }
-
-  // tools/importer/parsers/tabs-activity.js
-  function parse3(element, { document: document2 }) {
-    const tabButtons = element.querySelectorAll(".tab-menu-link");
-    const tabPanes = element.querySelectorAll(".tab-pane");
-    const cells = [];
-    tabButtons.forEach((btn, i) => {
-      const pane = tabPanes[i];
-      if (!pane) return;
-      const label = btn.textContent.trim();
-      cells.push([label, pane]);
-    });
-    const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Tabs",
-      cells
-    });
-    element.replaceWith(block);
-  }
-
-  // tools/importer/parsers/columns-numbered.js
-  function parse4(element, { document: document2 }) {
-    const items = element.querySelectorAll(".editorial-index-item");
-    const cells = [];
-    items.forEach((item) => {
-      const number = item.querySelector(".editorial-index-number");
-      const content = item.querySelector(":scope > div");
-      cells.push([number || "", content || ""]);
-    });
-    const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Columns (columns-numbered)",
-      cells
-    });
-    element.replaceWith(block);
-  }
-
   // tools/importer/parsers/cards-article.js
-  function parse5(element, { document: document2 }) {
+  function parse2(element, { document: document2 }) {
     const cards = element.querySelectorAll(".article-card");
     const cells = [];
     cards.forEach((card) => {
@@ -181,8 +108,42 @@ var CustomImportScript = (() => {
     element.replaceWith(block);
   }
 
+  // tools/importer/parsers/columns-numbered.js
+  function parse3(element, { document: document2 }) {
+    const items = element.querySelectorAll(".editorial-index-item");
+    const cells = [];
+    items.forEach((item) => {
+      const number = item.querySelector(".editorial-index-number");
+      const content = item.querySelector(":scope > div");
+      cells.push([number || "", content || ""]);
+    });
+    const block = WebImporter.Blocks.createBlock(document2, {
+      name: "Columns (columns-numbered)",
+      cells
+    });
+    element.replaceWith(block);
+  }
+
+  // tools/importer/parsers/tabs-activity.js
+  function parse4(element, { document: document2 }) {
+    const tabButtons = element.querySelectorAll(".tab-menu-link");
+    const tabPanes = element.querySelectorAll(".tab-pane");
+    const cells = [];
+    tabButtons.forEach((btn, i) => {
+      const pane = tabPanes[i];
+      if (!pane) return;
+      const label = btn.textContent.trim();
+      cells.push([label, pane]);
+    });
+    const block = WebImporter.Blocks.createBlock(document2, {
+      name: "Tabs",
+      cells
+    });
+    element.replaceWith(block);
+  }
+
   // tools/importer/parsers/columns-promo.js
-  function parse6(element, { document: document2 }) {
+  function parse5(element, { document: document2 }) {
     const cells = [];
     const cards = element.querySelectorAll(".card");
     if (cards.length > 0) {
@@ -288,113 +249,116 @@ var CustomImportScript = (() => {
     }
   }
 
-  // tools/importer/import-hub-landing-page.js
+  // tools/importer/import-destinations-page.js
   var PAGE_TEMPLATE = {
-    name: "hub-landing-page",
-    description: "Category hub page with hero, featured spotlight, category cards/grid, educational content, and cross-promotion links",
+    name: "destinations-page",
+    description: "Destinations page with hero, flagship expedition, article cards, editorial indexes, tabbed content, checklist, and CTAs",
     urls: [
-      "https://gabrielwalt.github.io/wknd/adventures.html"
+      "https://gabrielwalt.github.io/wknd/destinations.html"
     ],
     blocks: [
       {
         name: "hero",
-        instances: ["section.hero-section.hero-section--full", "section.hero-section"]
-      },
-      {
-        name: "columns-featured",
-        instances: [".featured-article"]
-      },
-      {
-        name: "tabs-activity",
-        instances: [".tab-container.tab-container--wide"]
-      },
-      {
-        name: "columns-numbered",
-        instances: [".editorial-index"]
+        instances: ["section.hero-section"]
       },
       {
         name: "cards-article",
         instances: [".grid-layout.desktop-3-column.grid-gap-lg:has(.article-card)"]
       },
       {
+        name: "columns-numbered",
+        instances: [".editorial-index"]
+      },
+      {
+        name: "tabs-activity",
+        instances: [".tab-container.tab-container--wide"]
+      },
+      {
         name: "columns-promo",
-        instances: [".grid-layout.grid-layout--2col"]
+        instances: [".grid-layout.grid-layout--2col:has(.card)"]
       }
     ],
     sections: [
       {
         id: "section-1",
         name: "Hero",
-        selector: "section.hero-section.hero-section--full",
+        selector: "section.hero-section",
         style: "dark",
         blocks: ["hero"],
         defaultContent: []
       },
       {
         id: "section-2",
-        name: "Accent Banner",
-        selector: "section.section.accent-section",
+        name: "Flagship Expedition",
+        selector: "section:nth-of-type(2)",
         style: "accent",
         blocks: [],
-        defaultContent: ["h2.h2-heading", "p.paragraph-xl"]
+        defaultContent: ["h2", "p"]
       },
       {
         id: "section-3",
-        name: "Featured Article",
-        selector: "section.section.secondary-section:has(.featured-article)",
-        style: "secondary",
-        blocks: ["columns-featured"],
-        defaultContent: []
+        name: "Our Expeditions",
+        selector: "section:nth-of-type(3)",
+        style: null,
+        blocks: ["cards-article"],
+        defaultContent: ["h2"]
       },
       {
         id: "section-4",
-        name: "Browse by Activity",
-        selector: "section.section:has(.tab-container)",
-        style: null,
-        blocks: ["tabs-activity"],
-        defaultContent: ["h2.section-heading"]
+        name: "What an Expedition Demands",
+        selector: "section:nth-of-type(4)",
+        style: "secondary",
+        blocks: ["columns-numbered"],
+        defaultContent: ["h2", "p"]
       },
       {
         id: "section-5",
-        name: "Choosing Your Adventure",
-        selector: "section.section.secondary-section:has(.container--narrow):not(:has(.featured-article)):not(:has(.editorial-index))",
-        style: "secondary",
-        blocks: [],
-        defaultContent: ["h2.h2-heading", "p.paragraph-lg"]
+        name: "Full Accounts",
+        selector: "section:nth-of-type(5)",
+        style: null,
+        blocks: ["tabs-activity"],
+        defaultContent: ["h2"]
       },
       {
         id: "section-6",
-        name: "Recent Reports",
-        selector: "section.section:has(.grid-gap-lg > .article-card)",
-        style: null,
-        blocks: ["cards-article"],
-        defaultContent: ["h2.section-heading"]
+        name: "The Gear You'll Actually Need",
+        selector: "section:nth-of-type(6)",
+        style: "secondary",
+        blocks: ["columns-numbered"],
+        defaultContent: ["h2"]
       },
       {
         id: "section-7",
-        name: "Adventure by Skill Level",
-        selector: "section.section.secondary-section:has(.editorial-index)",
-        style: "secondary",
-        blocks: ["columns-numbered", "columns-promo"],
-        defaultContent: ["h2.section-heading"]
+        name: "Pre-Departure Checklist",
+        selector: "section:nth-of-type(7)",
+        style: "accent",
+        blocks: [],
+        defaultContent: ["h2", "ul", ".button-group"]
       },
       {
         id: "section-8",
-        name: "Gear CTA",
-        selector: "section.section.inverse-section",
+        name: "What's Next",
+        selector: "section:nth-of-type(8)",
         style: "dark",
         blocks: [],
-        defaultContent: ["h2.h2-heading", "p.paragraph-lg", "a.button"]
+        defaultContent: ["h2", "p", "a.button"]
+      },
+      {
+        id: "section-9",
+        name: "Two-Card CTA",
+        selector: "section:nth-of-type(9)",
+        style: "dark",
+        blocks: ["columns-promo"],
+        defaultContent: []
       }
     ]
   };
   var parsers = {
     "hero": parse,
-    "columns-featured": parse2,
-    "tabs-activity": parse3,
-    "columns-numbered": parse4,
-    "cards-article": parse5,
-    "columns-promo": parse6
+    "cards-article": parse2,
+    "columns-numbered": parse3,
+    "tabs-activity": parse4,
+    "columns-promo": parse5
   };
   var transformers = [
     transform,
@@ -434,7 +398,7 @@ var CustomImportScript = (() => {
     console.log(`Found ${pageBlocks.length} block instances on page`);
     return pageBlocks;
   }
-  var import_hub_landing_page_default = {
+  var import_destinations_page_default = {
     transform: (payload) => {
       const { document: document2, url, html, params } = payload;
       const main = document2.body;
@@ -472,5 +436,5 @@ var CustomImportScript = (() => {
       }];
     }
   };
-  return __toCommonJS(import_hub_landing_page_exports);
+  return __toCommonJS(import_destinations_page_exports);
 })();

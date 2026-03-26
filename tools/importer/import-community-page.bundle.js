@@ -17,10 +17,10 @@ var CustomImportScript = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // tools/importer/import-hub-landing-page.js
-  var import_hub_landing_page_exports = {};
-  __export(import_hub_landing_page_exports, {
-    default: () => import_hub_landing_page_default
+  // tools/importer/import-community-page.js
+  var import_community_page_exports = {};
+  __export(import_community_page_exports, {
+    default: () => import_community_page_default
   });
 
   // tools/importer/parsers/hero-full.js
@@ -94,26 +94,8 @@ var CustomImportScript = (() => {
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/tabs-activity.js
-  function parse3(element, { document: document2 }) {
-    const tabButtons = element.querySelectorAll(".tab-menu-link");
-    const tabPanes = element.querySelectorAll(".tab-pane");
-    const cells = [];
-    tabButtons.forEach((btn, i) => {
-      const pane = tabPanes[i];
-      if (!pane) return;
-      const label = btn.textContent.trim();
-      cells.push([label, pane]);
-    });
-    const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Tabs",
-      cells
-    });
-    element.replaceWith(block);
-  }
-
   // tools/importer/parsers/columns-numbered.js
-  function parse4(element, { document: document2 }) {
+  function parse3(element, { document: document2 }) {
     const items = element.querySelectorAll(".editorial-index-item");
     const cells = [];
     items.forEach((item) => {
@@ -129,7 +111,7 @@ var CustomImportScript = (() => {
   }
 
   // tools/importer/parsers/cards-article.js
-  function parse5(element, { document: document2 }) {
+  function parse4(element, { document: document2 }) {
     const cards = element.querySelectorAll(".article-card");
     const cells = [];
     cards.forEach((card) => {
@@ -182,7 +164,7 @@ var CustomImportScript = (() => {
   }
 
   // tools/importer/parsers/columns-promo.js
-  function parse6(element, { document: document2 }) {
+  function parse5(element, { document: document2 }) {
     const cells = [];
     const cards = element.querySelectorAll(".card");
     if (cards.length > 0) {
@@ -223,6 +205,33 @@ var CustomImportScript = (() => {
     }
     const block = WebImporter.Blocks.createBlock(document2, {
       name: "Columns (columns-promo)",
+      cells
+    });
+    element.replaceWith(block);
+  }
+
+  // tools/importer/parsers/accordion-faq.js
+  function parse6(element, { document: document2 }) {
+    const faqItems = element.querySelectorAll(".faq-item");
+    const cells = [];
+    faqItems.forEach((item) => {
+      const questionEl = item.querySelector(".faq-question");
+      let questionText = "";
+      if (questionEl) {
+        const clone = questionEl.cloneNode(true);
+        const icon = clone.querySelector(".faq-icon");
+        if (icon) icon.remove();
+        questionText = clone.textContent.trim();
+      }
+      const answer = item.querySelector(".faq-answer");
+      const questionDiv = document2.createElement("div");
+      const questionP = document2.createElement("p");
+      questionP.textContent = questionText;
+      questionDiv.appendChild(questionP);
+      cells.push([questionDiv, answer || ""]);
+    });
+    const block = WebImporter.Blocks.createBlock(document2, {
+      name: "accordion-faq",
       cells
     });
     element.replaceWith(block);
@@ -288,25 +297,21 @@ var CustomImportScript = (() => {
     }
   }
 
-  // tools/importer/import-hub-landing-page.js
+  // tools/importer/import-community-page.js
   var PAGE_TEMPLATE = {
-    name: "hub-landing-page",
-    description: "Category hub page with hero, featured spotlight, category cards/grid, educational content, and cross-promotion links",
+    name: "community-page",
+    description: "Community page with hero, featured reader story, submission guidelines, dispatches, editorial standards, FAQ, and CTA",
     urls: [
-      "https://gabrielwalt.github.io/wknd/adventures.html"
+      "https://gabrielwalt.github.io/wknd/community.html"
     ],
     blocks: [
       {
         name: "hero",
-        instances: ["section.hero-section.hero-section--full", "section.hero-section"]
+        instances: ["section.hero-section"]
       },
       {
         name: "columns-featured",
         instances: [".featured-article"]
-      },
-      {
-        name: "tabs-activity",
-        instances: [".tab-container.tab-container--wide"]
       },
       {
         name: "columns-numbered",
@@ -318,83 +323,95 @@ var CustomImportScript = (() => {
       },
       {
         name: "columns-promo",
-        instances: [".grid-layout.grid-layout--2col"]
+        instances: [".accent-section .grid-layout.tablet-1-column:has(.card)"]
+      },
+      {
+        name: "accordion-faq",
+        instances: [".faq-list"]
       }
     ],
     sections: [
       {
         id: "section-1",
         name: "Hero",
-        selector: "section.hero-section.hero-section--full",
+        selector: "section.hero-section",
         style: "dark",
         blocks: ["hero"],
         defaultContent: []
       },
       {
         id: "section-2",
-        name: "Accent Banner",
-        selector: "section.section.accent-section",
-        style: "accent",
+        name: "Statement",
+        selector: "section:nth-of-type(2)",
+        style: "dark",
         blocks: [],
-        defaultContent: ["h2.h2-heading", "p.paragraph-xl"]
+        defaultContent: ["h2", "p"]
       },
       {
         id: "section-3",
-        name: "Featured Article",
-        selector: "section.section.secondary-section:has(.featured-article)",
+        name: "Featured Story + How to Submit",
+        selector: "section:nth-of-type(3)",
         style: "secondary",
-        blocks: ["columns-featured"],
+        blocks: ["columns-featured", "columns-numbered"],
         defaultContent: []
       },
       {
         id: "section-4",
-        name: "Browse by Activity",
-        selector: "section.section:has(.tab-container)",
+        name: "From the Wild",
+        selector: "section:nth-of-type(4)",
         style: null,
-        blocks: ["tabs-activity"],
-        defaultContent: ["h2.section-heading"]
+        blocks: ["cards-article"],
+        defaultContent: ["h2", "p"]
       },
       {
         id: "section-5",
-        name: "Choosing Your Adventure",
-        selector: "section.section.secondary-section:has(.container--narrow):not(:has(.featured-article)):not(:has(.editorial-index))",
+        name: "Reader Dispatches",
+        selector: "section:nth-of-type(5)",
         style: "secondary",
-        blocks: [],
-        defaultContent: ["h2.h2-heading", "p.paragraph-lg"]
+        blocks: ["columns-featured", "cards-article"],
+        defaultContent: ["h2", "p"]
       },
       {
         id: "section-6",
-        name: "Recent Reports",
-        selector: "section.section:has(.grid-gap-lg > .article-card)",
-        style: null,
-        blocks: ["cards-article"],
-        defaultContent: ["h2.section-heading"]
+        name: "What Makes a Great Dispatch",
+        selector: "section:nth-of-type(6)",
+        style: "dark",
+        blocks: [],
+        defaultContent: ["h2", "p"]
       },
       {
         id: "section-7",
-        name: "Adventure by Skill Level",
-        selector: "section.section.secondary-section:has(.editorial-index)",
-        style: "secondary",
-        blocks: ["columns-numbered", "columns-promo"],
-        defaultContent: ["h2.section-heading"]
+        name: "Join In",
+        selector: "section:nth-of-type(7)",
+        style: "accent",
+        blocks: ["columns-promo"],
+        defaultContent: ["h2"]
       },
       {
         id: "section-8",
-        name: "Gear CTA",
-        selector: "section.section.inverse-section",
+        name: "Submission FAQ",
+        selector: "section:nth-of-type(8)",
+        style: null,
+        blocks: ["accordion-faq"],
+        defaultContent: ["h2"]
+      },
+      {
+        id: "section-9",
+        name: "CTA",
+        selector: "section:nth-of-type(9)",
         style: "dark",
         blocks: [],
-        defaultContent: ["h2.h2-heading", "p.paragraph-lg", "a.button"]
+        defaultContent: ["h2", ".button-group"]
       }
     ]
   };
   var parsers = {
     "hero": parse,
     "columns-featured": parse2,
-    "tabs-activity": parse3,
-    "columns-numbered": parse4,
-    "cards-article": parse5,
-    "columns-promo": parse6
+    "columns-numbered": parse3,
+    "cards-article": parse4,
+    "columns-promo": parse5,
+    "accordion-faq": parse6
   };
   var transformers = [
     transform,
@@ -434,7 +451,7 @@ var CustomImportScript = (() => {
     console.log(`Found ${pageBlocks.length} block instances on page`);
     return pageBlocks;
   }
-  var import_hub_landing_page_default = {
+  var import_community_page_default = {
     transform: (payload) => {
       const { document: document2, url, html, params } = payload;
       const main = document2.body;
@@ -472,5 +489,5 @@ var CustomImportScript = (() => {
       }];
     }
   };
-  return __toCommonJS(import_hub_landing_page_exports);
+  return __toCommonJS(import_community_page_exports);
 })();

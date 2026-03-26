@@ -1,23 +1,35 @@
 /* eslint-disable */
 /* global WebImporter */
 
-// PARSER IMPORTS - All parsers needed for the editorial-section-page template
+// PARSER IMPORTS - All parsers needed for the sustainability-page template
 import heroParser from './parsers/hero-full.js';
-import columnsFeaturedParser from './parsers/columns-featured.js';
-import columnsPromoParser from './parsers/columns-promo.js';
-import tabsActivityParser from './parsers/tabs-activity.js';
 import columnsNumberedParser from './parsers/columns-numbered.js';
+import columnsFeaturedParser from './parsers/columns-featured.js';
+import tabsTeamParser from './parsers/tabs-team.js';
+import cardsFeatureParser from './parsers/cards-feature.js';
+import cardsArticleParser from './parsers/cards-article.js';
 
 // TRANSFORMER IMPORTS - All transformers for WKND site
 import wkndCleanupTransformer from './transformers/wknd-cleanup.js';
 import wkndSectionsTransformer from './transformers/wknd-sections.js';
 
-// PAGE TEMPLATE CONFIGURATION - Embedded from page-templates.json (editorial-section-page)
+// PAGE TEMPLATE CONFIGURATION — sustainability-page (10 sections)
+// Sustainability page DOM (from https://gabrielwalt.github.io/wknd/sustainability.html):
+//   0: section.hero-section                          — Hero
+//   1: section.section.secondary-section (editorial-index) — Wild Ethics (columns-numbered)
+//   2: section.section.secondary-section (featured)  — Featured Story (columns-featured)
+//   3: section.section (tab-menu, article-card)      — By Topic (tabs-team pattern)
+//   4: section.section (container--narrow)            — The Adventurer's Responsibility (default content)
+//   5: section.section.secondary-section (feature-card) — The WKND Wild Ethics (cards-feature)
+//   6: section.section.secondary-section (article-card)  — Places That Need Our Care (cards-article)
+//   7: section.section.accent-section                — Practical Steps (default content)
+//   8: section.section.inverse-section (blockquote)  — This is not optional (default content)
+//   9: section.section.accent-section (centered)     — CTA
 const PAGE_TEMPLATE = {
-  name: 'editorial-section-page',
-  description: 'Editorial section page with hero, featured story, editorial philosophy, and engagement CTAs',
+  name: 'sustainability-page',
+  description: 'Sustainability page with hero, wild ethics principles, featured story, topic tabs, editorial content, ethics guidelines, articles, practical steps, pledge, and CTA',
   urls: [
-    'https://gabrielwalt.github.io/wknd/field-notes.html',
+    'https://gabrielwalt.github.io/wknd/sustainability.html',
   ],
   blocks: [
     {
@@ -25,20 +37,24 @@ const PAGE_TEMPLATE = {
       instances: ['section.hero-section'],
     },
     {
+      name: 'columns-numbered',
+      instances: ['.editorial-index'],
+    },
+    {
       name: 'columns-featured',
       instances: ['.featured-article'],
     },
     {
-      name: 'columns-promo',
-      instances: ['.grid-layout.grid-layout--2col'],
+      name: 'tabs-team',
+      instances: ['section.section:has(.tab-menu)'],
     },
     {
-      name: 'tabs-activity',
-      instances: ['.tab-container.tab-container--wide'],
+      name: 'cards-feature',
+      instances: ['.grid-layout.desktop-3-column.grid-gap-lg:has(.feature-card)'],
     },
     {
-      name: 'columns-numbered',
-      instances: ['.editorial-index'],
+      name: 'cards-article',
+      instances: ['.grid-layout.desktop-3-column.grid-gap-lg:has(.article-card)'],
     },
   ],
   sections: [
@@ -52,59 +68,75 @@ const PAGE_TEMPLATE = {
     },
     {
       id: 'section-2',
-      name: 'Statement',
-      selector: 'section.section.inverse-section:has(.container--centered):not(:has(.editorial-index))',
-      style: 'dark',
-      blocks: [],
-      defaultContent: ['h2.h2-heading', 'p.paragraph-xl'],
-    },
-    {
-      id: 'section-2b',
-      name: 'Numbered Principles',
-      selector: 'section.section:has(.editorial-index)',
-      style: null,
+      name: 'Wild Ethics',
+      selector: 'section:nth-of-type(2)',
+      style: 'secondary',
       blocks: ['columns-numbered'],
-      defaultContent: ['h2.section-heading', 'h2.h2-heading'],
+      defaultContent: ['h2'],
     },
     {
       id: 'section-3',
-      name: 'Featured Article',
-      selector: 'section.section.secondary-section:has(.featured-article)',
+      name: 'Featured Story',
+      selector: 'section:nth-of-type(3)',
       style: 'secondary',
       blocks: ['columns-featured'],
       defaultContent: [],
     },
     {
       id: 'section-4',
-      name: 'Editorial Content',
-      selector: 'section.section.inverse-section:has(.container--narrow:not(.container--centered))',
-      style: 'dark',
-      blocks: [],
-      defaultContent: ['h2.h2-heading', 'p.paragraph-lg'],
+      name: 'By Topic',
+      selector: 'section:nth-of-type(4)',
+      style: null,
+      blocks: ['tabs-team'],
+      defaultContent: ['h2'],
     },
     {
       id: 'section-5',
-      name: 'Promo Cards',
-      selector: 'section.section.secondary-section:has(.grid-layout--2col)',
-      style: 'secondary',
-      blocks: ['columns-promo'],
-      defaultContent: [],
+      name: 'The Adventurer\'s Responsibility',
+      selector: 'section:nth-of-type(5)',
+      style: null,
+      blocks: [],
+      defaultContent: ['h2', 'p'],
     },
     {
       id: 'section-6',
-      name: 'Essential Reading',
-      selector: 'section.section:has(.tab-container)',
-      style: null,
-      blocks: ['tabs-activity'],
-      defaultContent: ['h2.h2-heading'],
+      name: 'The WKND Wild Ethics',
+      selector: 'section:nth-of-type(6)',
+      style: 'secondary',
+      blocks: ['cards-feature'],
+      defaultContent: ['h2'],
     },
     {
       id: 'section-7',
-      name: 'CTA',
-      selector: 'section.section.inverse-section:last-of-type',
+      name: 'Places That Need Our Care',
+      selector: 'section:nth-of-type(7)',
+      style: 'secondary',
+      blocks: ['cards-article'],
+      defaultContent: ['h2'],
+    },
+    {
+      id: 'section-8',
+      name: 'Practical Steps',
+      selector: 'section:nth-of-type(8)',
+      style: 'accent',
+      blocks: [],
+      defaultContent: ['h2', 'p', 'ul'],
+    },
+    {
+      id: 'section-9',
+      name: 'This Is Not Optional',
+      selector: 'section:nth-of-type(9)',
       style: 'dark',
       blocks: [],
-      defaultContent: ['h2.h2-heading', 'p.paragraph-lg', 'a.button'],
+      defaultContent: ['h2', 'p', 'blockquote'],
+    },
+    {
+      id: 'section-10',
+      name: 'CTA',
+      selector: 'section:nth-of-type(10)',
+      style: 'accent',
+      blocks: [],
+      defaultContent: ['h2', '.button-group'],
     },
   ],
 };
@@ -112,10 +144,11 @@ const PAGE_TEMPLATE = {
 // PARSER REGISTRY - Map parser names to functions
 const parsers = {
   'hero': heroParser,
-  'columns-featured': columnsFeaturedParser,
-  'columns-promo': columnsPromoParser,
-  'tabs-activity': tabsActivityParser,
   'columns-numbered': columnsNumberedParser,
+  'columns-featured': columnsFeaturedParser,
+  'tabs-team': tabsTeamParser,
+  'cards-feature': cardsFeatureParser,
+  'cards-article': cardsArticleParser,
 };
 
 // TRANSFORMER REGISTRY

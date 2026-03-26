@@ -2,16 +2,17 @@
   "status": "success",
   "url": "https://gabrielwalt.github.io/wknd/index.html",
   "path": "wknd/index",
-  "timestamp": "2026-03-25T22:41:22.075Z",
+  "timestamp": "2026-03-26T11:02:57.847Z",
   "title": "WKND Adventures — Bold Stories. Real Life. Wild Places.",
   "template": "homepage",
   "blocks": [
-    "hero-full",
+    "hero",
+    "hero",
     "columns-featured",
     "tabs-activity",
     "ticker",
     "accordion-faq",
-    "columns-editorial",
+    "columns-numbered",
     "columns-gallery"
   ]
 }

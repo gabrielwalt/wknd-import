@@ -1,26 +1,33 @@
 /* eslint-disable */
 /* global WebImporter */
 
-// PARSER IMPORTS - All parsers needed for the informational-page template
+// PARSER IMPORTS - All parsers needed for the destinations-page template
 import heroParser from './parsers/hero-full.js';
-import columnsAboutParser from './parsers/columns-about.js';
-import cardsFeatureParser from './parsers/cards-feature.js';
-import tabsTeamParser from './parsers/tabs-team.js';
-import columnsPromoParser from './parsers/columns-promo.js';
-import accordionFaqParser from './parsers/accordion-faq.js';
 import cardsArticleParser from './parsers/cards-article.js';
+import columnsNumberedParser from './parsers/columns-numbered.js';
+import tabsActivityParser from './parsers/tabs-activity.js';
+import columnsPromoParser from './parsers/columns-promo.js';
 
 // TRANSFORMER IMPORTS - All transformers for WKND site
 import wkndCleanupTransformer from './transformers/wknd-cleanup.js';
 import wkndSectionsTransformer from './transformers/wknd-sections.js';
 
-// PAGE TEMPLATE CONFIGURATION - Embedded from page-templates.json (informational-page)
+// PAGE TEMPLATE CONFIGURATION — destinations-page (9 sections)
+// Destinations page DOM (from https://gabrielwalt.github.io/wknd/destinations.html):
+//   0: section.hero-section                         — Hero (no --full)
+//   1: section.section.accent-section (narrow)      — Flagship Expedition
+//   2: section.section (article-card grid, 3-col)   — Our Expeditions
+//   3: section.section.secondary-section (editorial) — What an Expedition Demands
+//   4: section.section (tab-container--wide)         — Full Accounts
+//   5: section.section.secondary-section (editorial) — The Gear You'll Actually Need
+//   6: section.section.accent-section (narrow+centered, checklist) — Pre-Departure Checklist
+//   7: section.section.inverse-section (narrow)      — What's Next
+//   8: section.section.inverse-section (2col cards)  — Two-Card CTA
 const PAGE_TEMPLATE = {
-  name: 'informational-page',
-  description: 'Informational page with hero, structured content such as team profiles and FAQ categories',
+  name: 'destinations-page',
+  description: 'Destinations page with hero, flagship expedition, article cards, editorial indexes, tabbed content, checklist, and CTAs',
   urls: [
-    'https://gabrielwalt.github.io/wknd/about.html',
-    'https://gabrielwalt.github.io/wknd/faq.html',
+    'https://gabrielwalt.github.io/wknd/destinations.html',
   ],
   blocks: [
     {
@@ -28,28 +35,20 @@ const PAGE_TEMPLATE = {
       instances: ['section.hero-section'],
     },
     {
-      name: 'columns-about',
-      instances: ['.grid-layout.grid-gap-xxl.tablet-1-column'],
+      name: 'cards-article',
+      instances: ['.grid-layout.desktop-3-column.grid-gap-lg:has(.article-card)'],
     },
     {
-      name: 'cards-feature',
-      instances: ['.inverse-section .grid-layout.desktop-3-column.grid-gap-lg:has(.feature-card)'],
+      name: 'columns-numbered',
+      instances: ['.editorial-index'],
     },
     {
-      name: 'tabs-team',
-      instances: ['section.section:has(.tab-menu)'],
+      name: 'tabs-activity',
+      instances: ['.tab-container.tab-container--wide'],
     },
     {
       name: 'columns-promo',
-      instances: ['.accent-section .grid-layout.tablet-1-column:has(.card)'],
-    },
-    {
-      name: 'accordion-faq',
-      instances: ['.faq-list'],
-    },
-    {
-      name: 'cards-article',
-      instances: ['.grid-layout.desktop-3-column.grid-gap-lg:has(.article-card)'],
+      instances: ['.grid-layout.grid-layout--2col:has(.card)'],
     },
   ],
   sections: [
@@ -63,43 +62,67 @@ const PAGE_TEMPLATE = {
     },
     {
       id: 'section-2',
-      name: 'Statement',
-      selector: 'section.section.accent-section:first-of-type',
+      name: 'Flagship Expedition',
+      selector: 'section:nth-of-type(2)',
       style: 'accent',
-      blocks: ['columns-promo'],
-      defaultContent: ['h2.h2-heading', 'p.paragraph-xl'],
+      blocks: [],
+      defaultContent: ['h2', 'p'],
     },
     {
       id: 'section-3',
-      name: 'Content Body',
-      selector: 'section.section:not(.accent-section):not(.inverse-section):not(.secondary-section)',
+      name: 'Our Expeditions',
+      selector: 'section:nth-of-type(3)',
       style: null,
-      blocks: ['columns-about', 'tabs-team', 'accordion-faq', 'cards-article'],
-      defaultContent: ['h2.h2-heading', 'p.paragraph-lg'],
+      blocks: ['cards-article'],
+      defaultContent: ['h2'],
     },
     {
       id: 'section-4',
-      name: 'Dark Content',
-      selector: 'section.section.inverse-section',
-      style: 'dark',
-      blocks: ['cards-feature'],
-      defaultContent: ['h2.h2-heading', 'p.paragraph-lg'],
+      name: 'What an Expedition Demands',
+      selector: 'section:nth-of-type(4)',
+      style: 'secondary',
+      blocks: ['columns-numbered'],
+      defaultContent: ['h2', 'p'],
     },
     {
       id: 'section-5',
-      name: 'Secondary Content',
-      selector: 'section.section.secondary-section',
-      style: 'secondary',
-      blocks: ['accordion-faq'],
-      defaultContent: ['h2.h2-heading', 'p.paragraph-lg'],
+      name: 'Full Accounts',
+      selector: 'section:nth-of-type(5)',
+      style: null,
+      blocks: ['tabs-activity'],
+      defaultContent: ['h2'],
     },
     {
       id: 'section-6',
-      name: 'CTA',
-      selector: ['section.section.accent-section:last-of-type', 'section.section.inverse-section:last-of-type'],
+      name: 'The Gear You\'ll Actually Need',
+      selector: 'section:nth-of-type(6)',
+      style: 'secondary',
+      blocks: ['columns-numbered'],
+      defaultContent: ['h2'],
+    },
+    {
+      id: 'section-7',
+      name: 'Pre-Departure Checklist',
+      selector: 'section:nth-of-type(7)',
       style: 'accent',
       blocks: [],
-      defaultContent: ['h2.h2-heading', 'p.paragraph-lg', '.button-group'],
+      defaultContent: ['h2', 'ul', '.button-group'],
+    },
+    {
+      id: 'section-8',
+      name: 'What\'s Next',
+      selector: 'section:nth-of-type(8)',
+      style: 'dark',
+      blocks: [],
+      defaultContent: ['h2', 'p', 'a.button'],
+    },
+    {
+      id: 'section-9',
+      name: 'Two-Card CTA',
+      selector: 'section:nth-of-type(9)',
+      style: 'dark',
+      blocks: ['columns-promo'],
+      defaultContent: [],
     },
   ],
 };
@@ -107,12 +130,10 @@ const PAGE_TEMPLATE = {
 // PARSER REGISTRY - Map parser names to functions
 const parsers = {
   'hero': heroParser,
-  'columns-about': columnsAboutParser,
-  'cards-feature': cardsFeatureParser,
-  'tabs-team': tabsTeamParser,
-  'columns-promo': columnsPromoParser,
-  'accordion-faq': accordionFaqParser,
   'cards-article': cardsArticleParser,
+  'columns-numbered': columnsNumberedParser,
+  'tabs-activity': tabsActivityParser,
+  'columns-promo': columnsPromoParser,
 };
 
 // TRANSFORMER REGISTRY

@@ -2,15 +2,13 @@
   "status": "success",
   "url": "https://gabrielwalt.github.io/wknd/expeditions.html",
   "path": "wknd/expeditions",
-  "timestamp": "2026-03-25T23:43:49.103Z",
+  "timestamp": "2026-03-26T11:50:45.298Z",
   "title": "Expeditions — WKND Adventures",
-  "template": "hub-landing-page",
+  "template": "expedition-gear-page",
   "blocks": [
-    "hero-full",
+    "hero",
     "tabs-activity",
-    "columns-editorial",
-    "columns-editorial",
-    "cards-article",
-    "columns-promo"
+    "columns-numbered",
+    "columns-numbered"
   ]
 }

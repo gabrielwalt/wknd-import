@@ -1,23 +1,32 @@
 /* eslint-disable */
 /* global WebImporter */
 
-// PARSER IMPORTS - All parsers needed for the editorial-section-page template
+// PARSER IMPORTS - All parsers needed for the faq-page template
 import heroParser from './parsers/hero-full.js';
-import columnsFeaturedParser from './parsers/columns-featured.js';
 import columnsPromoParser from './parsers/columns-promo.js';
-import tabsActivityParser from './parsers/tabs-activity.js';
-import columnsNumberedParser from './parsers/columns-numbered.js';
+import accordionFaqParser from './parsers/accordion-faq.js';
+import cardsArticleParser from './parsers/cards-article.js';
 
 // TRANSFORMER IMPORTS - All transformers for WKND site
 import wkndCleanupTransformer from './transformers/wknd-cleanup.js';
 import wkndSectionsTransformer from './transformers/wknd-sections.js';
 
-// PAGE TEMPLATE CONFIGURATION - Embedded from page-templates.json (editorial-section-page)
+// PAGE TEMPLATE CONFIGURATION — faq-page (9 sections)
+// FAQ page DOM (from https://gabrielwalt.github.io/wknd/faq.html):
+//   0: section.hero-section                        — Hero
+//   1: section.section.accent-section               — FAQ Categories (columns-promo with card links)
+//   2: section.section (nth-of-type 3)              — Planning & Adventures FAQ (accordion-faq)
+//   3: section.section.secondary-section (nth 4)    — Contributing Stories FAQ (accordion-faq)
+//   4: section.section (nth-of-type 5)              — Planning Your Trip FAQ (accordion-faq)
+//   5: section.section.secondary-section (nth 6)    — About WKND Content FAQ (accordion-faq)
+//   6: section.section (nth-of-type 7)              — Contributing & Community FAQ (accordion-faq)
+//   7: section.section.secondary-section (nth 8)    — Popular Starting Points (cards-article)
+//   8: section.section.inverse-section              — CTA
 const PAGE_TEMPLATE = {
-  name: 'editorial-section-page',
-  description: 'Editorial section page with hero, featured story, editorial philosophy, and engagement CTAs',
+  name: 'faq-page',
+  description: 'FAQ page with hero, category cards, alternating FAQ accordion sections, popular articles, and CTA',
   urls: [
-    'https://gabrielwalt.github.io/wknd/field-notes.html',
+    'https://gabrielwalt.github.io/wknd/faq.html',
   ],
   blocks: [
     {
@@ -25,20 +34,16 @@ const PAGE_TEMPLATE = {
       instances: ['section.hero-section'],
     },
     {
-      name: 'columns-featured',
-      instances: ['.featured-article'],
-    },
-    {
       name: 'columns-promo',
-      instances: ['.grid-layout.grid-layout--2col'],
+      instances: ['.accent-section .grid-layout.tablet-1-column:has(.card)'],
     },
     {
-      name: 'tabs-activity',
-      instances: ['.tab-container.tab-container--wide'],
+      name: 'accordion-faq',
+      instances: ['.faq-list'],
     },
     {
-      name: 'columns-numbered',
-      instances: ['.editorial-index'],
+      name: 'cards-article',
+      instances: ['.grid-layout.desktop-3-column.grid-gap-lg:has(.article-card)'],
     },
   ],
   sections: [
@@ -52,59 +57,67 @@ const PAGE_TEMPLATE = {
     },
     {
       id: 'section-2',
-      name: 'Statement',
-      selector: 'section.section.inverse-section:has(.container--centered):not(:has(.editorial-index))',
-      style: 'dark',
-      blocks: [],
-      defaultContent: ['h2.h2-heading', 'p.paragraph-xl'],
-    },
-    {
-      id: 'section-2b',
-      name: 'Numbered Principles',
-      selector: 'section.section:has(.editorial-index)',
-      style: null,
-      blocks: ['columns-numbered'],
-      defaultContent: ['h2.section-heading', 'h2.h2-heading'],
-    },
-    {
-      id: 'section-3',
-      name: 'Featured Article',
-      selector: 'section.section.secondary-section:has(.featured-article)',
-      style: 'secondary',
-      blocks: ['columns-featured'],
-      defaultContent: [],
-    },
-    {
-      id: 'section-4',
-      name: 'Editorial Content',
-      selector: 'section.section.inverse-section:has(.container--narrow:not(.container--centered))',
-      style: 'dark',
-      blocks: [],
-      defaultContent: ['h2.h2-heading', 'p.paragraph-lg'],
-    },
-    {
-      id: 'section-5',
-      name: 'Promo Cards',
-      selector: 'section.section.secondary-section:has(.grid-layout--2col)',
-      style: 'secondary',
+      name: 'FAQ Categories',
+      selector: 'section.section.accent-section',
+      style: 'accent',
       blocks: ['columns-promo'],
       defaultContent: [],
     },
     {
-      id: 'section-6',
-      name: 'Essential Reading',
-      selector: 'section.section:has(.tab-container)',
+      id: 'section-3',
+      name: 'Planning & Adventures FAQ',
+      selector: 'section:nth-of-type(3)',
       style: null,
-      blocks: ['tabs-activity'],
-      defaultContent: ['h2.h2-heading'],
+      blocks: ['accordion-faq'],
+      defaultContent: ['h2'],
+    },
+    {
+      id: 'section-4',
+      name: 'Contributing Stories FAQ',
+      selector: 'section:nth-of-type(4)',
+      style: 'secondary',
+      blocks: ['accordion-faq'],
+      defaultContent: ['h2'],
+    },
+    {
+      id: 'section-5',
+      name: 'Planning Your Trip FAQ',
+      selector: 'section:nth-of-type(5)',
+      style: null,
+      blocks: ['accordion-faq'],
+      defaultContent: ['h2'],
+    },
+    {
+      id: 'section-6',
+      name: 'About WKND Content FAQ',
+      selector: 'section:nth-of-type(6)',
+      style: 'secondary',
+      blocks: ['accordion-faq'],
+      defaultContent: ['h2'],
     },
     {
       id: 'section-7',
+      name: 'Contributing & Community FAQ',
+      selector: 'section:nth-of-type(7)',
+      style: null,
+      blocks: ['accordion-faq'],
+      defaultContent: ['h2'],
+    },
+    {
+      id: 'section-8',
+      name: 'Popular Starting Points',
+      selector: 'section:nth-of-type(8)',
+      style: 'secondary',
+      blocks: ['cards-article'],
+      defaultContent: ['h2'],
+    },
+    {
+      id: 'section-9',
       name: 'CTA',
-      selector: 'section.section.inverse-section:last-of-type',
+      selector: 'section.section.inverse-section',
       style: 'dark',
       blocks: [],
-      defaultContent: ['h2.h2-heading', 'p.paragraph-lg', 'a.button'],
+      defaultContent: ['h2', 'p', '.button-group'],
     },
   ],
 };
@@ -112,10 +125,9 @@ const PAGE_TEMPLATE = {
 // PARSER REGISTRY - Map parser names to functions
 const parsers = {
   'hero': heroParser,
-  'columns-featured': columnsFeaturedParser,
   'columns-promo': columnsPromoParser,
-  'tabs-activity': tabsActivityParser,
-  'columns-numbered': columnsNumberedParser,
+  'accordion-faq': accordionFaqParser,
+  'cards-article': cardsArticleParser,
 };
 
 // TRANSFORMER REGISTRY

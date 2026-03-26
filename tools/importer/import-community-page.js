@@ -1,23 +1,34 @@
 /* eslint-disable */
 /* global WebImporter */
 
-// PARSER IMPORTS - All parsers needed for the editorial-section-page template
+// PARSER IMPORTS - All parsers needed for the community-page template
 import heroParser from './parsers/hero-full.js';
 import columnsFeaturedParser from './parsers/columns-featured.js';
-import columnsPromoParser from './parsers/columns-promo.js';
-import tabsActivityParser from './parsers/tabs-activity.js';
 import columnsNumberedParser from './parsers/columns-numbered.js';
+import cardsArticleParser from './parsers/cards-article.js';
+import columnsPromoParser from './parsers/columns-promo.js';
+import accordionFaqParser from './parsers/accordion-faq.js';
 
 // TRANSFORMER IMPORTS - All transformers for WKND site
 import wkndCleanupTransformer from './transformers/wknd-cleanup.js';
 import wkndSectionsTransformer from './transformers/wknd-sections.js';
 
-// PAGE TEMPLATE CONFIGURATION - Embedded from page-templates.json (editorial-section-page)
+// PAGE TEMPLATE CONFIGURATION — community-page (9 sections)
+// Community page DOM (from https://gabrielwalt.github.io/wknd/community.html):
+//   0: section.hero-section                                — Hero
+//   1: section.section.inverse-section (centered+narrow)   — Statement
+//   2: section.section.secondary-section (featured+index)  — Featured Story + How to Submit
+//   3: section.section (article-card)                      — From the Wild (cards-article)
+//   4: section.section.secondary-section (featured+article)— Reader Dispatches
+//   5: section.section.inverse-section (narrow, no center) — What makes a great dispatch?
+//   6: section.section.accent-section (grid+card)          — Join in (columns-promo)
+//   7: section.section (faq-list)                          — Submission FAQ (accordion-faq)
+//   8: section.section.inverse-section (centered, no narrow)— CTA
 const PAGE_TEMPLATE = {
-  name: 'editorial-section-page',
-  description: 'Editorial section page with hero, featured story, editorial philosophy, and engagement CTAs',
+  name: 'community-page',
+  description: 'Community page with hero, featured reader story, submission guidelines, dispatches, editorial standards, FAQ, and CTA',
   urls: [
-    'https://gabrielwalt.github.io/wknd/field-notes.html',
+    'https://gabrielwalt.github.io/wknd/community.html',
   ],
   blocks: [
     {
@@ -29,16 +40,20 @@ const PAGE_TEMPLATE = {
       instances: ['.featured-article'],
     },
     {
-      name: 'columns-promo',
-      instances: ['.grid-layout.grid-layout--2col'],
-    },
-    {
-      name: 'tabs-activity',
-      instances: ['.tab-container.tab-container--wide'],
-    },
-    {
       name: 'columns-numbered',
       instances: ['.editorial-index'],
+    },
+    {
+      name: 'cards-article',
+      instances: ['.grid-layout.desktop-3-column.grid-gap-lg:has(.article-card)'],
+    },
+    {
+      name: 'columns-promo',
+      instances: ['.accent-section .grid-layout.tablet-1-column:has(.card)'],
+    },
+    {
+      name: 'accordion-faq',
+      instances: ['.faq-list'],
     },
   ],
   sections: [
@@ -53,58 +68,66 @@ const PAGE_TEMPLATE = {
     {
       id: 'section-2',
       name: 'Statement',
-      selector: 'section.section.inverse-section:has(.container--centered):not(:has(.editorial-index))',
+      selector: 'section:nth-of-type(2)',
       style: 'dark',
       blocks: [],
-      defaultContent: ['h2.h2-heading', 'p.paragraph-xl'],
-    },
-    {
-      id: 'section-2b',
-      name: 'Numbered Principles',
-      selector: 'section.section:has(.editorial-index)',
-      style: null,
-      blocks: ['columns-numbered'],
-      defaultContent: ['h2.section-heading', 'h2.h2-heading'],
+      defaultContent: ['h2', 'p'],
     },
     {
       id: 'section-3',
-      name: 'Featured Article',
-      selector: 'section.section.secondary-section:has(.featured-article)',
+      name: 'Featured Story + How to Submit',
+      selector: 'section:nth-of-type(3)',
       style: 'secondary',
-      blocks: ['columns-featured'],
+      blocks: ['columns-featured', 'columns-numbered'],
       defaultContent: [],
     },
     {
       id: 'section-4',
-      name: 'Editorial Content',
-      selector: 'section.section.inverse-section:has(.container--narrow:not(.container--centered))',
-      style: 'dark',
-      blocks: [],
-      defaultContent: ['h2.h2-heading', 'p.paragraph-lg'],
+      name: 'From the Wild',
+      selector: 'section:nth-of-type(4)',
+      style: null,
+      blocks: ['cards-article'],
+      defaultContent: ['h2', 'p'],
     },
     {
       id: 'section-5',
-      name: 'Promo Cards',
-      selector: 'section.section.secondary-section:has(.grid-layout--2col)',
+      name: 'Reader Dispatches',
+      selector: 'section:nth-of-type(5)',
       style: 'secondary',
-      blocks: ['columns-promo'],
-      defaultContent: [],
+      blocks: ['columns-featured', 'cards-article'],
+      defaultContent: ['h2', 'p'],
     },
     {
       id: 'section-6',
-      name: 'Essential Reading',
-      selector: 'section.section:has(.tab-container)',
-      style: null,
-      blocks: ['tabs-activity'],
-      defaultContent: ['h2.h2-heading'],
+      name: 'What Makes a Great Dispatch',
+      selector: 'section:nth-of-type(6)',
+      style: 'dark',
+      blocks: [],
+      defaultContent: ['h2', 'p'],
     },
     {
       id: 'section-7',
+      name: 'Join In',
+      selector: 'section:nth-of-type(7)',
+      style: 'accent',
+      blocks: ['columns-promo'],
+      defaultContent: ['h2'],
+    },
+    {
+      id: 'section-8',
+      name: 'Submission FAQ',
+      selector: 'section:nth-of-type(8)',
+      style: null,
+      blocks: ['accordion-faq'],
+      defaultContent: ['h2'],
+    },
+    {
+      id: 'section-9',
       name: 'CTA',
-      selector: 'section.section.inverse-section:last-of-type',
+      selector: 'section:nth-of-type(9)',
       style: 'dark',
       blocks: [],
-      defaultContent: ['h2.h2-heading', 'p.paragraph-lg', 'a.button'],
+      defaultContent: ['h2', '.button-group'],
     },
   ],
 };
@@ -113,9 +136,10 @@ const PAGE_TEMPLATE = {
 const parsers = {
   'hero': heroParser,
   'columns-featured': columnsFeaturedParser,
-  'columns-promo': columnsPromoParser,
-  'tabs-activity': tabsActivityParser,
   'columns-numbered': columnsNumberedParser,
+  'cards-article': cardsArticleParser,
+  'columns-promo': columnsPromoParser,
+  'accordion-faq': accordionFaqParser,
 };
 
 // TRANSFORMER REGISTRY

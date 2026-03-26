@@ -17,10 +17,10 @@ var CustomImportScript = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // tools/importer/import-hub-landing-page.js
-  var import_hub_landing_page_exports = {};
-  __export(import_hub_landing_page_exports, {
-    default: () => import_hub_landing_page_default
+  // tools/importer/import-about-page.js
+  var import_about_page_exports = {};
+  __export(import_about_page_exports, {
+    default: () => import_about_page_default
   });
 
   // tools/importer/parsers/hero-full.js
@@ -55,74 +55,118 @@ var CustomImportScript = (() => {
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/columns-featured.js
+  // tools/importer/parsers/columns-about.js
   function parse2(element, { document: document2 }) {
-    const image = element.querySelector(".featured-article-image img, :scope > a img");
-    const tag = element.querySelector(".tag");
-    const heading = element.querySelector("h2, .h2-heading");
-    const description = element.querySelector(".paragraph-lg");
-    const avatar = element.querySelector(".avatar img");
-    const bylineName = element.querySelector(".article-byline-name");
-    const bylineMeta = element.querySelector(".article-byline-meta");
-    const contentCol = [];
-    if (tag) contentCol.push(tag);
-    if (heading) contentCol.push(heading);
-    if (description) contentCol.push(description);
-    if (avatar || bylineName || bylineMeta) {
-      const bylineP = document2.createElement("p");
-      if (avatar) bylineP.append(avatar);
-      if (bylineName) bylineP.append(document2.createTextNode(" " + bylineName.textContent));
-      if (bylineMeta) {
-        bylineP.append(document2.createElement("br"));
-        bylineP.append(document2.createTextNode(bylineMeta.textContent));
+    const cells = [];
+    const col1 = document2.createElement("div");
+    const children = element.children;
+    if (children[0]) {
+      const heading = children[0].querySelector("h2");
+      if (heading) {
+        const h2 = document2.createElement("h2");
+        h2.textContent = heading.textContent.trim();
+        col1.appendChild(h2);
       }
-      contentCol.push(bylineP);
+      const paragraphs = children[0].querySelectorAll("p");
+      paragraphs.forEach((p) => {
+        const newP = document2.createElement("p");
+        newP.textContent = p.textContent.trim();
+        col1.appendChild(newP);
+      });
     }
-    const ctaLink = element.querySelector(".featured-article-footer > a, .article-byline + a");
-    if (ctaLink) {
-      const label = ctaLink.querySelector(".button-label");
-      if (label) ctaLink.textContent = label.textContent.trim();
-      contentCol.push(ctaLink);
+    const col2 = document2.createElement("div");
+    if (children[1]) {
+      const img = children[1].querySelector("img");
+      if (img) {
+        col2.appendChild(img.cloneNode(true));
+      }
     }
-    const cells = [
-      [image || "", contentCol]
-    ];
+    cells.push([col1, col2]);
     const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Columns (columns-featured)",
+      name: "Columns (columns-about)",
       cells
     });
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/tabs-activity.js
+  // tools/importer/parsers/cards-feature.js
   function parse3(element, { document: document2 }) {
-    const tabButtons = element.querySelectorAll(".tab-menu-link");
-    const tabPanes = element.querySelectorAll(".tab-pane");
     const cells = [];
-    tabButtons.forEach((btn, i) => {
-      const pane = tabPanes[i];
-      if (!pane) return;
-      const label = btn.textContent.trim();
-      cells.push([label, pane]);
+    const cards = element.querySelectorAll(".feature-card");
+    cards.forEach((card) => {
+      const row = document2.createElement("div");
+      const heading = card.querySelector("h3");
+      if (heading) {
+        const h3 = document2.createElement("h3");
+        h3.textContent = heading.textContent.trim();
+        row.appendChild(h3);
+      }
+      const desc = card.querySelector("p");
+      if (desc) {
+        const p = document2.createElement("p");
+        p.textContent = desc.textContent.trim();
+        row.appendChild(p);
+      }
+      const link = card.querySelector("a");
+      if (link) {
+        const a = document2.createElement("a");
+        a.href = link.href;
+        a.textContent = link.textContent.trim();
+        row.appendChild(a);
+      }
+      cells.push([row]);
     });
     const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Tabs",
+      name: "Cards (cards-feature)",
       cells
     });
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/columns-numbered.js
+  // tools/importer/parsers/tabs-team.js
   function parse4(element, { document: document2 }) {
-    const items = element.querySelectorAll(".editorial-index-item");
     const cells = [];
-    items.forEach((item) => {
-      const number = item.querySelector(".editorial-index-number");
-      const content = item.querySelector(":scope > div");
-      cells.push([number || "", content || ""]);
+    const tabButtons = element.querySelectorAll(".tab-menu .tab-menu-link");
+    const tabPanes = element.querySelectorAll(".tab-pane");
+    tabButtons.forEach((button, i) => {
+      const tabLabel = document2.createElement("div");
+      tabLabel.textContent = button.textContent.trim();
+      const tabContent = document2.createElement("div");
+      const pane = tabPanes[i];
+      if (pane) {
+        const profileImg = pane.querySelector(".profile-circle img");
+        if (profileImg) {
+          const img = profileImg.cloneNode(true);
+          tabContent.appendChild(img);
+        }
+        const name = pane.querySelector(".profile-name");
+        if (name) {
+          const h3 = document2.createElement("h3");
+          h3.textContent = name.textContent.trim();
+          tabContent.appendChild(h3);
+        }
+        const role = pane.querySelector(".profile-name + p");
+        if (role) {
+          const em = document2.createElement("em");
+          em.textContent = role.textContent.trim();
+          const p = document2.createElement("p");
+          p.appendChild(em);
+          tabContent.appendChild(p);
+        }
+        const bioContainer = pane.querySelector(".team-profile-bio");
+        if (bioContainer) {
+          const paragraphs = bioContainer.querySelectorAll("p");
+          paragraphs.forEach((para) => {
+            const newP = document2.createElement("p");
+            newP.textContent = para.textContent.trim();
+            tabContent.appendChild(newP);
+          });
+        }
+      }
+      cells.push([tabLabel, tabContent]);
     });
     const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Columns (columns-numbered)",
+      name: "Tabs (tabs-team)",
       cells
     });
     element.replaceWith(block);
@@ -176,53 +220,6 @@ var CustomImportScript = (() => {
     });
     const block = WebImporter.Blocks.createBlock(document2, {
       name: "Cards (cards-article)",
-      cells
-    });
-    element.replaceWith(block);
-  }
-
-  // tools/importer/parsers/columns-promo.js
-  function parse6(element, { document: document2 }) {
-    const cells = [];
-    const cards = element.querySelectorAll(".card");
-    if (cards.length > 0) {
-      const row = [];
-      cards.forEach((card) => {
-        const col = document2.createElement("div");
-        const eyebrow = card.querySelector(".hero-eyebrow");
-        if (eyebrow) {
-          const p = document2.createElement("p");
-          p.innerHTML = `<em>${eyebrow.textContent.trim()}</em>`;
-          col.appendChild(p);
-        }
-        const heading = card.querySelector("h3");
-        if (heading) {
-          const h3 = document2.createElement("h3");
-          h3.textContent = heading.textContent.trim();
-          col.appendChild(h3);
-        }
-        const desc = card.querySelector(".paragraph-lg");
-        if (desc) {
-          const p = document2.createElement("p");
-          p.textContent = desc.textContent.trim();
-          col.appendChild(p);
-        }
-        const link = card.querySelector('a[class*="button"]');
-        if (link) {
-          const p = document2.createElement("p");
-          const a = document2.createElement("a");
-          a.href = link.getAttribute("href");
-          const label = link.querySelector(".button-label");
-          a.textContent = label ? label.textContent.trim() : link.textContent.trim();
-          p.appendChild(a);
-          col.appendChild(p);
-        }
-        row.push(col);
-      });
-      cells.push(row);
-    }
-    const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Columns (columns-promo)",
       cells
     });
     element.replaceWith(block);
@@ -288,113 +285,116 @@ var CustomImportScript = (() => {
     }
   }
 
-  // tools/importer/import-hub-landing-page.js
+  // tools/importer/import-about-page.js
   var PAGE_TEMPLATE = {
-    name: "hub-landing-page",
-    description: "Category hub page with hero, featured spotlight, category cards/grid, educational content, and cross-promotion links",
+    name: "about-page",
+    description: "About page with hero, statement, origin story, values, team profiles, editorial standard, funding, editor picks, and CTA",
     urls: [
-      "https://gabrielwalt.github.io/wknd/adventures.html"
+      "https://gabrielwalt.github.io/wknd/about.html"
     ],
     blocks: [
       {
         name: "hero",
-        instances: ["section.hero-section.hero-section--full", "section.hero-section"]
+        instances: ["section.hero-section"]
       },
       {
-        name: "columns-featured",
-        instances: [".featured-article"]
+        name: "columns-about",
+        instances: [".grid-layout.grid-gap-xxl.tablet-1-column"]
       },
       {
-        name: "tabs-activity",
-        instances: [".tab-container.tab-container--wide"]
+        name: "cards-feature",
+        instances: [".inverse-section .grid-layout.desktop-3-column.grid-gap-lg:has(.feature-card)"]
       },
       {
-        name: "columns-numbered",
-        instances: [".editorial-index"]
+        name: "tabs-team",
+        instances: ["section.section:has(.tab-menu)"]
       },
       {
         name: "cards-article",
         instances: [".grid-layout.desktop-3-column.grid-gap-lg:has(.article-card)"]
-      },
-      {
-        name: "columns-promo",
-        instances: [".grid-layout.grid-layout--2col"]
       }
     ],
     sections: [
       {
         id: "section-1",
         name: "Hero",
-        selector: "section.hero-section.hero-section--full",
+        selector: "section.hero-section",
         style: "dark",
         blocks: ["hero"],
         defaultContent: []
       },
       {
         id: "section-2",
-        name: "Accent Banner",
-        selector: "section.section.accent-section",
+        name: "Statement",
+        selector: "section.section.accent-section:has(> div.container--narrow)",
         style: "accent",
         blocks: [],
         defaultContent: ["h2.h2-heading", "p.paragraph-xl"]
       },
       {
         id: "section-3",
-        name: "Featured Article",
-        selector: "section.section.secondary-section:has(.featured-article)",
-        style: "secondary",
-        blocks: ["columns-featured"],
+        name: "How It Started",
+        selector: "section.section:has(.grid-gap-xxl)",
+        style: null,
+        blocks: ["columns-about"],
         defaultContent: []
       },
       {
         id: "section-4",
-        name: "Browse by Activity",
-        selector: "section.section:has(.tab-container)",
-        style: null,
-        blocks: ["tabs-activity"],
-        defaultContent: ["h2.section-heading"]
+        name: "What We Believe",
+        selector: "section.section.inverse-section:has(.feature-card)",
+        style: "dark",
+        blocks: ["cards-feature"],
+        defaultContent: ["h2.h2-heading"]
       },
       {
         id: "section-5",
-        name: "Choosing Your Adventure",
-        selector: "section.section.secondary-section:has(.container--narrow):not(:has(.featured-article)):not(:has(.editorial-index))",
-        style: "secondary",
-        blocks: [],
-        defaultContent: ["h2.h2-heading", "p.paragraph-lg"]
+        name: "The Team",
+        selector: "section.section:has(.tab-menu)",
+        style: null,
+        blocks: ["tabs-team"],
+        defaultContent: ["h2.h2-heading"]
       },
       {
         id: "section-6",
-        name: "Recent Reports",
-        selector: "section.section:has(.grid-gap-lg > .article-card)",
-        style: null,
-        blocks: ["cards-article"],
-        defaultContent: ["h2.section-heading"]
+        name: "Editorial Standard",
+        selector: "section.section.secondary-section",
+        style: "secondary",
+        blocks: [],
+        defaultContent: ["h2.h2-heading", "p"]
       },
       {
         id: "section-7",
-        name: "Adventure by Skill Level",
-        selector: "section.section.secondary-section:has(.editorial-index)",
-        style: "secondary",
-        blocks: ["columns-numbered", "columns-promo"],
-        defaultContent: ["h2.section-heading"]
+        name: "How We Fund Our Work",
+        selector: "section.section.inverse-section:not(:has(.feature-card))",
+        style: "dark",
+        blocks: [],
+        defaultContent: ["h2.h2-heading", "p"]
       },
       {
         id: "section-8",
-        name: "Gear CTA",
-        selector: "section.section.inverse-section",
-        style: "dark",
+        name: "From Our Editors",
+        selector: "section.section:has(.article-card)",
+        style: null,
+        blocks: ["cards-article"],
+        defaultContent: ["h2.h2-heading"]
+      },
+      {
+        id: "section-9",
+        name: "CTA",
+        selector: "section.section.accent-section:not(:has(> div.container--narrow))",
+        style: "accent",
         blocks: [],
-        defaultContent: ["h2.h2-heading", "p.paragraph-lg", "a.button"]
+        defaultContent: ["h2.h2-heading", "p", ".button-group"]
       }
     ]
   };
   var parsers = {
     "hero": parse,
-    "columns-featured": parse2,
-    "tabs-activity": parse3,
-    "columns-numbered": parse4,
-    "cards-article": parse5,
-    "columns-promo": parse6
+    "columns-about": parse2,
+    "cards-feature": parse3,
+    "tabs-team": parse4,
+    "cards-article": parse5
   };
   var transformers = [
     transform,
@@ -434,7 +434,7 @@ var CustomImportScript = (() => {
     console.log(`Found ${pageBlocks.length} block instances on page`);
     return pageBlocks;
   }
-  var import_hub_landing_page_default = {
+  var import_about_page_default = {
     transform: (payload) => {
       const { document: document2, url, html, params } = payload;
       const main = document2.body;
@@ -472,5 +472,5 @@ var CustomImportScript = (() => {
       }];
     }
   };
-  return __toCommonJS(import_hub_landing_page_exports);
+  return __toCommonJS(import_about_page_exports);
 })();

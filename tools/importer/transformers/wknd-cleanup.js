@@ -10,11 +10,8 @@ const TransformHook = { beforeTransform: 'beforeTransform', afterTransform: 'aft
 
 export default function transform(hookName, element, payload) {
   if (hookName === TransformHook.beforeTransform) {
-    // No cookie banners or overlays detected in WKND source
-  }
-  if (hookName === TransformHook.afterTransform) {
     // Remove non-authorable site chrome (header nav, footer, skip link)
-    // Found in captured DOM: <div class="navbar">, <footer class="footer">, <a class="skip-link">
+    // Must run before section splitting so nav/footer elements don't interfere with section selectors
     WebImporter.DOMUtils.remove(element, [
       '.navbar',
       '.footer',
@@ -23,8 +20,10 @@ export default function transform(hookName, element, payload) {
       'link',
       'iframe',
     ]);
-
+  }
+  if (hookName === TransformHook.afterTransform) {
     // Resolve all relative image URLs to absolute using the source page URL
+    // Runs after block parsing so parser-created images are also resolved
     const sourceUrl = payload.params && payload.params.originalURL;
     if (sourceUrl) {
       element.querySelectorAll('img').forEach((img) => {

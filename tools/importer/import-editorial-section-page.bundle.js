@@ -179,8 +179,6 @@ var CustomImportScript = (() => {
   var TransformHook = { beforeTransform: "beforeTransform", afterTransform: "afterTransform" };
   function transform(hookName, element, payload) {
     if (hookName === TransformHook.beforeTransform) {
-    }
-    if (hookName === TransformHook.afterTransform) {
       WebImporter.DOMUtils.remove(element, [
         ".navbar",
         ".footer",
@@ -189,6 +187,8 @@ var CustomImportScript = (() => {
         "link",
         "iframe"
       ]);
+    }
+    if (hookName === TransformHook.afterTransform) {
       const sourceUrl = payload.params && payload.params.originalURL;
       if (sourceUrl) {
         element.querySelectorAll("img").forEach((img) => {
@@ -207,7 +207,7 @@ var CustomImportScript = (() => {
   // tools/importer/transformers/wknd-sections.js
   var TransformHook2 = { beforeTransform: "beforeTransform", afterTransform: "afterTransform" };
   function transform2(hookName, element, payload) {
-    if (hookName === TransformHook2.afterTransform) {
+    if (hookName === TransformHook2.beforeTransform) {
       const { template } = payload;
       if (!template || !template.sections || template.sections.length < 2) return;
       const sections = template.sections;
@@ -240,9 +240,7 @@ var CustomImportScript = (() => {
     name: "editorial-section-page",
     description: "Editorial section page with hero, featured story, editorial philosophy, and engagement CTAs",
     urls: [
-      "https://gabrielwalt.github.io/wknd/field-notes",
-      "https://gabrielwalt.github.io/wknd/community.html",
-      "https://gabrielwalt.github.io/wknd/sustainability.html"
+      "https://gabrielwalt.github.io/wknd/field-notes.html"
     ],
     blocks: [
       {
@@ -278,7 +276,7 @@ var CustomImportScript = (() => {
       {
         id: "section-2",
         name: "Statement",
-        selector: "section.section.inverse-section:first-of-type:not(:has(.editorial-index))",
+        selector: "section.section.inverse-section:has(.container--centered):not(:has(.editorial-index))",
         style: "dark",
         blocks: [],
         defaultContent: ["h2.h2-heading", "p.paragraph-xl"]
@@ -302,7 +300,7 @@ var CustomImportScript = (() => {
       {
         id: "section-4",
         name: "Editorial Content",
-        selector: "section.section.inverse-section:has(.container--narrow)",
+        selector: "section.section.inverse-section:has(.container--narrow:not(.container--centered))",
         style: "dark",
         blocks: [],
         defaultContent: ["h2.h2-heading", "p.paragraph-lg"]
