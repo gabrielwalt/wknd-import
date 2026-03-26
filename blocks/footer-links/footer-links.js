@@ -21,7 +21,7 @@ export default async function decorate(block) {
   grid.append(col1);
 
   // Columns 2-4: Explore, Recent Stories, Info (from rows 1-3, each has 1 cell)
-  for (let i = 1; i < rows.length; i++) {
+  for (let i = 1; i < rows.length; i += 1) {
     const col = document.createElement('div');
     if (rows[i]) {
       const cells = [...rows[i].children];

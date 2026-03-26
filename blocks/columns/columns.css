@@ -73,7 +73,10 @@
 
 /* ===== Columns Numbered variant ===== */
 .columns.columns-numbered > div {
-  gap: var(--gap-md);
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: var(--gap-lg);
+  align-items: start;
   border-top: 1px solid var(--accent-color);
   padding: var(--gap-xl) 0;
 }
@@ -104,10 +107,8 @@
 
 @media (width >= 900px) {
   .columns.columns-numbered > div {
-    display: grid;
     grid-template-columns: 80px 1fr;
     gap: var(--gap-2xl);
-    align-items: start;
   }
 
   .columns.columns-numbered > div > div:first-child {
@@ -211,13 +212,12 @@
   object-fit: cover;
 }
 
-/* button paragraph (last p in content column) — align right */
+/* button paragraph */
 .columns.columns-featured > div > div:not(.columns-img-col) > p:last-child {
-  text-align: right;
   margin-top: var(--gap-sm);
 }
 
-/* style link as accent button when not decorated by EDS */
+/* style link as dark button when not decorated by EDS */
 .columns.columns-featured > div > div:not(.columns-img-col) > p:last-child > a:any-link {
   display: inline-block;
   font-family: var(--heading-font-family);
@@ -227,21 +227,21 @@
   text-transform: uppercase;
   text-decoration: none;
   padding: 12px 28px;
-  background-color: var(--accent-color);
+  background-color: var(--dark-color);
   color: var(--background-color);
   border-radius: var(--button-border-radius);
-  box-shadow: 3px 3px 0 var(--dark-color);
+  box-shadow: 3px 3px 0 var(--accent-color);
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .columns.columns-featured > div > div:not(.columns-img-col) > p:last-child > a:any-link:hover {
   transform: translateY(-2px);
-  box-shadow: 5px 5px 0 var(--dark-color);
+  box-shadow: 5px 5px 0 var(--accent-color);
 }
 
 .columns.columns-featured > div > div:not(.columns-img-col) > p:last-child > a:any-link:active {
   transform: translateY(0);
-  box-shadow: 0 0 0 var(--dark-color);
+  box-shadow: 0 0 0 var(--accent-color);
 }
 
 @media (width >= 900px) {
@@ -258,6 +258,28 @@
 
   .columns.columns-featured > div > .columns-img-col {
     max-height: 400px;
+  }
+
+  /* content column: grid for footer row (byline left + button right) */
+  .columns.columns-featured > div > div:not(.columns-img-col) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    row-gap: 12px;
+  }
+
+  .columns.columns-featured > div > div:not(.columns-img-col) > * {
+    grid-column: 1 / -1;
+  }
+
+  .columns.columns-featured > div > div:not(.columns-img-col) > p:nth-last-child(2) {
+    grid-column: 1;
+    align-self: center;
+  }
+
+  .columns.columns-featured > div > div:not(.columns-img-col) > p:last-child {
+    grid-column: 2;
+    align-self: center;
+    text-align: right;
   }
 }
 

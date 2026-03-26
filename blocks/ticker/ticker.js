@@ -1,5 +1,10 @@
 export default function decorate(block) {
-  const items = [...block.children].map((row) => row.textContent.trim());
+  // Extract items from <p> tags inside the first cell (EDS block structure)
+  const cell = block.querySelector(':scope > div > div');
+  const paragraphs = cell ? [...cell.querySelectorAll('p')] : [];
+  const items = paragraphs.length > 0
+    ? paragraphs.map((p) => p.textContent.trim()).filter(Boolean)
+    : [...block.children].map((row) => row.textContent.trim()).filter(Boolean);
   block.textContent = '';
 
   const track = document.createElement('div');

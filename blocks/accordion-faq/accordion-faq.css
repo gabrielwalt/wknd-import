@@ -1,3 +1,5 @@
+/* stylelint-disable no-descending-specificity -- section header + block selectors */
+
 /* Accordion FAQ — Expandable FAQ items with rounded pill borders
  * Merged: wknd-import accordion-faq structure + boilerplate faq visual design
  * Uses <details>/<summary> HTML; class names match wknd-import JS expectations.
@@ -21,7 +23,9 @@
   font-family: var(--body-font-family);
 }
 
-/* --- Header row: heading + link side-by-side (from boilerplate) --- */
+/* --- Header row: heading + link side-by-side --- */
+
+/* When heading is inside the block (boilerplate pattern) */
 .accordion-faq > div:first-child {
   display: flex;
   align-items: baseline;
@@ -49,6 +53,65 @@
   text-underline-offset: 3px;
   white-space: nowrap;
   color: var(--text-color);
+}
+
+/* When heading is in section default-content-wrapper (EDS import pattern) */
+.accordion-faq-container > .default-content-wrapper {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  max-width: var(--faq-max-width, 768px);
+  margin: 0 auto var(--faq-heading-margin-bottom, 32px);
+}
+
+.accordion-faq-container > .default-content-wrapper h2 {
+  margin: 0;
+  flex: 1 1 auto;
+}
+
+.accordion-faq-container > .default-content-wrapper p {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.accordion-faq-container > .default-content-wrapper a {
+  font-family: var(--heading-font-family);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.84px;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  color: var(--text-color);
+}
+
+/* Reset button styling on links inside FAQ section header */
+.accordion-faq-container > .default-content-wrapper .button-container {
+  display: inline;
+}
+
+.accordion-faq-container > .default-content-wrapper a.button:any-link {
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  text-decoration: underline;
+  padding: 0;
+  margin: 0;
+  font-family: var(--heading-font-family);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.84px;
+  color: var(--text-color);
+}
+
+.accordion-faq-container > .default-content-wrapper a.button:hover {
+  transform: none;
+  box-shadow: none;
+  background: none;
 }
 
 /* --- FAQ item (details element) — rounded pill with hover accent --- */

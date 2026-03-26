@@ -666,7 +666,7 @@ main .section.dark.narrow h2 {
   margin: 12px 0;
 }
 
-.button-group .button-wrapper {
+main .default-content-wrapper .button-group p.button-wrapper {
   margin: 0;
 }
 

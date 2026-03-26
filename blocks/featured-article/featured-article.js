@@ -8,7 +8,6 @@ export default async function decorate(block) {
   // cells[2] = avatar (picture)
   // cells[3] = byline info (name, meta, CTA link)
 
-  const imageCell = cells[0];
   const textCell = cells[1];
   const avatarCell = cells[2];
   const bylineCell = cells[3];
