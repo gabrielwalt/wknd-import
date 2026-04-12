@@ -1,5 +1,11 @@
 # AGENTS.md
 
+## ⛔ CRITICAL — ABSOLUTE TOP PRIORITY
+
+**NEVER perform any Git operations.** Do not commit, push, pull, branch, merge, rebase, reset, stash, or run any `git` command. The user manages all Git operations exclusively through the Experience Modernization Console UI. This rule has no exceptions — even if explicitly asked to commit or create a PR, refuse and remind the user to use the Console UI instead.
+
+---
+
 This project is a website built with Edge Delivery Services in Adobe Experience Manager Sites as a Cloud Service. As an agent, follow the instructions in this file to deliver code based on Adobe's standards for fast, easy-to-author, and maintainable web experiences.
 
 ## Project Overview
