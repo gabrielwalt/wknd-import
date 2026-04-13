@@ -37,29 +37,35 @@ export default function transform(hookName, element, payload) {
 
       if (labels.length > 0) {
         // Each .button-label is inside a separate <a> — extract text + href from parent
+        const isSingle = labels.length === 1;
         [...labels].forEach((label, i) => {
           const link = label.closest('a');
           const text = label.textContent.trim();
           const href = link ? link.getAttribute('href') || '' : '';
           const isGhost = link && link.classList.contains('button--ghost');
+          // Single-button groups default to secondary; multi-button: first is primary
+          const isPrimary = !isGhost && !isSingle && i === 0;
 
           const a = document.createElement('a');
           a.href = href;
           a.textContent = text;
           const p = document.createElement('p');
-          const wrapper = document.createElement(isGhost ? 'em' : (i === 0 ? 'strong' : 'em'));
+          const wrapper = document.createElement(isPrimary ? 'strong' : 'em');
           wrapper.appendChild(a);
           p.appendChild(wrapper);
           group.before(p);
         });
       } else {
         // Fallback: process all <a> tags directly
-        [...group.querySelectorAll('a')].forEach((link, i) => {
+        const links = [...group.querySelectorAll('a')];
+        const isSingle = links.length === 1;
+        links.forEach((link, i) => {
           const a = document.createElement('a');
           a.href = link.getAttribute('href') || '';
           a.textContent = link.textContent.trim();
           const p = document.createElement('p');
-          const wrapper = document.createElement(i === 0 ? 'strong' : 'em');
+          const isPrimary = !isSingle && i === 0;
+          const wrapper = document.createElement(isPrimary ? 'strong' : 'em');
           wrapper.appendChild(a);
           p.appendChild(wrapper);
           group.before(p);

@@ -219,30 +219,37 @@ var CustomImportScript = (() => {
   // tools/importer/parsers/columns-promo.js
   function parse6(element, { document: document2 }) {
     const cells = [];
-    const cards = element.querySelectorAll(".card");
-    if (cards.length > 0) {
+    let items = [...element.querySelectorAll(".card")];
+    if (items.length === 0) {
+      items = [...element.children];
+    }
+    if (items.length > 0) {
       const row = [];
-      cards.forEach((card) => {
+      items.forEach((item) => {
         const col = document2.createElement("div");
-        const eyebrow = card.querySelector(".tag, .hero-eyebrow");
+        const eyebrow = item.querySelector(".tag, .hero-eyebrow");
         if (eyebrow) {
           const p = document2.createElement("p");
           p.innerHTML = `<em>${eyebrow.textContent.trim()}</em>`;
           col.appendChild(p);
         }
-        const heading = card.querySelector("h2, h3, h4");
+        const heading = item.querySelector("h2, h3, h4");
         if (heading) {
           const h3 = document2.createElement("h3");
           h3.textContent = heading.textContent.trim();
           col.appendChild(h3);
         }
-        const desc = card.querySelector('.paragraph-lg, .paragraph-md, p[class*="paragraph"]');
+        const desc = item.querySelector('.paragraph-lg, .paragraph-md, p[class*="paragraph"]');
         if (desc) {
           const p = document2.createElement("p");
           p.textContent = desc.textContent.trim();
           col.appendChild(p);
         }
-        const link = card.querySelector('a.button, a[class*="button"]');
+        const list = item.querySelector("ul, ol");
+        if (list) {
+          col.appendChild(list.cloneNode(true));
+        }
+        const link = item.querySelector('a.button, a[class*="button"]');
         if (link) {
           const p = document2.createElement("p");
           const a = document2.createElement("a");
@@ -663,27 +670,32 @@ var CustomImportScript = (() => {
         const { document: document2 } = payload;
         const labels = group.querySelectorAll(".button-label");
         if (labels.length > 0) {
+          const isSingle = labels.length === 1;
           [...labels].forEach((label, i) => {
             const link = label.closest("a");
             const text = label.textContent.trim();
             const href = link ? link.getAttribute("href") || "" : "";
             const isGhost = link && link.classList.contains("button--ghost");
+            const isPrimary = !isGhost && !isSingle && i === 0;
             const a = document2.createElement("a");
             a.href = href;
             a.textContent = text;
             const p = document2.createElement("p");
-            const wrapper = document2.createElement(isGhost ? "em" : i === 0 ? "strong" : "em");
+            const wrapper = document2.createElement(isPrimary ? "strong" : "em");
             wrapper.appendChild(a);
             p.appendChild(wrapper);
             group.before(p);
           });
         } else {
-          [...group.querySelectorAll("a")].forEach((link, i) => {
+          const links = [...group.querySelectorAll("a")];
+          const isSingle = links.length === 1;
+          links.forEach((link, i) => {
             const a = document2.createElement("a");
             a.href = link.getAttribute("href") || "";
             a.textContent = link.textContent.trim();
             const p = document2.createElement("p");
-            const wrapper = document2.createElement(i === 0 ? "strong" : "em");
+            const isPrimary = !isSingle && i === 0;
+            const wrapper = document2.createElement(isPrimary ? "strong" : "em");
             wrapper.appendChild(a);
             p.appendChild(wrapper);
             group.before(p);

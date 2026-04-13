@@ -9,36 +9,45 @@
  */
 export default function parse(element, { document }) {
   const cells = [];
-  const cards = element.querySelectorAll('.card');
+  // Try .card children first, then fall back to direct children (gear list layout)
+  let items = [...element.querySelectorAll('.card')];
+  if (items.length === 0) {
+    items = [...element.children];
+  }
 
-  if (cards.length > 0) {
-    // Build one row with each card as a column
+  if (items.length > 0) {
     const row = [];
-    cards.forEach((card) => {
+    items.forEach((item) => {
       const col = document.createElement('div');
 
-      const eyebrow = card.querySelector('.tag, .hero-eyebrow');
+      const eyebrow = item.querySelector('.tag, .hero-eyebrow');
       if (eyebrow) {
         const p = document.createElement('p');
         p.innerHTML = `<em>${eyebrow.textContent.trim()}</em>`;
         col.appendChild(p);
       }
 
-      const heading = card.querySelector('h2, h3, h4');
+      const heading = item.querySelector('h2, h3, h4');
       if (heading) {
         const h3 = document.createElement('h3');
         h3.textContent = heading.textContent.trim();
         col.appendChild(h3);
       }
 
-      const desc = card.querySelector('.paragraph-lg, .paragraph-md, p[class*="paragraph"]');
+      const desc = item.querySelector('.paragraph-lg, .paragraph-md, p[class*="paragraph"]');
       if (desc) {
         const p = document.createElement('p');
         p.textContent = desc.textContent.trim();
         col.appendChild(p);
       }
 
-      const link = card.querySelector('a.button, a[class*="button"]');
+      // Lists (e.g. gear lists)
+      const list = item.querySelector('ul, ol');
+      if (list) {
+        col.appendChild(list.cloneNode(true));
+      }
+
+      const link = item.querySelector('a.button, a[class*="button"]');
       if (link) {
         const p = document.createElement('p');
         const a = document.createElement('a');
