@@ -192,19 +192,20 @@ With this information, you can construct URLs for the preview environment (same 
 This project is a migration of https://wknd-adventures.com/ to AEM Edge Delivery Services.
 See `PROJECT.md` for full project state (blocks, variants, pages, design tokens, import infrastructure).
 
-### Block Variant Convention
+### Block Architecture
 
-This project uses **consolidated block families** with CSS variants (not separate block folders).
-- 10 block folders total: `hero`, `cards`, `columns`, `tabs`, `gallery`, `accordion-faq`, `ticker`, `header`, `footer`, `fragment`
-- Variants are CSS class compounds: `class="cards cards-article"`, `class="hero hero-article"`, etc.
-- The `hero` block base is the full-bleed overlay hero (no variant needed). Only `hero-article` is a variant.
-- Variant names **always start with the base block name**: `columns (columns-promo)` not `columns (promo)`
-- A single CSS file per block family contains base styles + all variant overrides
+This project uses a mix of **standalone blocks** and **consolidated block families** with CSS variants.
+- 13 block folders total: `hero`, `cards`, `columns`, `tabs`, `featured-article`, `editorial-index`, `gallery`, `faq-list`, `ticker`, `team-profile`, `header`, `footer`, `fragment`
+- **Standalone blocks** (own folder, no variants): `featured-article`, `editorial-index`, `gallery`, `faq-list`, `ticker`, `team-profile`
+- **Block families with variants**: `hero (article)`, `cards (cards-article, cards-feature)`, `columns (columns-promo, columns-pullquote, columns-about)`
+- **Tabs** is a generic tab container that can nest any block inside its panels (e.g., `team-profile` block nested inside tabs for the team page)
+- The `hero` block base is the full-bleed overlay hero. `hero (article)` is the blog article variant.
+- Variant names for columns/cards start with the base block name: `columns (columns-promo)`, `cards (cards-article)`
 - EDS loads `blocks/{base-name}/{base-name}.js` regardless of which variant is used
 
 ### CSS Patterns
 
-- **Variant specificity:** `.hero.hero-article { ... }` overrides base `.hero` via compound selector
+- **Variant specificity:** `.hero.article { ... }` overrides base `.hero` via compound selector
 - **Container targeting for variants:** Use `:has()` — e.g., `.columns-wrapper:has(.columns-promo) { max-width: ... }`
 - **Consolidated files use** `/* stylelint-disable no-descending-specificity */` at the top — this is expected
 - **`moveInstrumentation` does not exist** in this project. Never import it from `scripts.js`.
@@ -215,7 +216,7 @@ This project uses **consolidated block families** with CSS variants (not separat
 
 This has major implications for block JS:
 - **hero.js** must detect `<img>` inside `<p>` (not just `<picture>`), extract it, wrap it in a new `<picture>`, and restructure the DOM for the full-bleed background pattern.
-- **columns.js** must detect `<img>` inside `<p>` for the `columns-img-col` class — use fallback `col.querySelector(':scope > p > img')` when `col.querySelector('picture')` returns null.
+- **columns.js** and **featured-article.js** must detect `<img>` inside `<p>` for image column classes — use fallback `col.querySelector(':scope > p > img')` when `col.querySelector('picture')` returns null.
 - **Any block JS** that relies on `<picture>` elements for image detection needs the same fallback pattern.
 
 The hero.js restructuring pattern:
@@ -266,7 +267,7 @@ Shadow colors vary by variant: Primary uses `var(--accent-color)`, Accent uses `
 
 ### Adjacent Item Border Pattern
 
-When block items need borders between them (e.g., columns-numbered), avoid `border-top` + `border-bottom` on all items — this creates double borders (2px visual) between adjacent items. Instead:
+When block items need borders between them (e.g., editorial-index), avoid `border-top` + `border-bottom` on all items — this creates double borders (2px visual) between adjacent items. Instead:
 - `border-top` on all items
 - `border-bottom` only on `:last-child`
 
@@ -329,13 +330,13 @@ To re-import a page:
 A page with any random set of sections and blocks in any order must import correctly. If a new page is created on the source site with a never-before-seen arrangement of sections and blocks, the import script must handle it without changes.
 
 **How it works:**
-- `BLOCK_REGISTRY` in `import.js` — array of `{ name, selectors[], parser }` entries. Each block is detected by CSS selectors that match the source DOM structure (e.g., `.featured-article` → columns-featured, `.faq-list` → accordion-faq). No URL or template context needed.
+- `BLOCK_REGISTRY` in `import.js` — array of `{ name, selectors[], parser }` entries. Each block is detected by CSS selectors that match the source DOM structure (e.g., `.featured-article` → featured-article, `.faq-list` → faq-list, `.editorial-index` → editorial-index). No URL or template context needed.
 - `wknd-sections.js` transformer — iterates ALL `<section>` elements on the page and derives section styles from CSS classes (`inverse-section` → dark, `secondary-section` → secondary, `accent-section` → accent). Compound modifiers detected from child classes (`.container--narrow` → narrow).
 - Parsers are self-contained: each receives only its matched DOM element and queries internal structure. No parser knows what page it's on or what other blocks exist.
 
 **Registry ordering rules (to prevent false matches):**
-1. Container blocks before their potential children (e.g., `tabs-activity` before `cards-article`, since tabs contain card grids)
-2. More specific variants before generic ones (e.g., `hero-article` before `hero`, `cards-feature` before `columns-gallery`)
+1. Container blocks before their potential children (e.g., `tabs` before `cards-article`, since tabs can contain nested blocks)
+2. More specific variants before generic ones (e.g., `hero (article)` before `hero`, `cards-feature` before `gallery`)
 3. Descendant filtering: elements nested inside already-matched blocks are automatically skipped
 
 ### Section Styles

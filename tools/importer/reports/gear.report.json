@@ -2,14 +2,14 @@
   "status": "success",
   "url": "https://wknd-adventures.com/gear.html",
   "path": "gear",
-  "timestamp": "2026-04-12T18:55:00.947Z",
+  "timestamp": "2026-04-13T11:14:41.484Z",
   "title": "Gear — WKND Adventures",
   "blocks": [
     "hero",
     "tabs-activity",
-    "tabs",
-    "columns-featured",
-    "columns-numbered",
-    "cards-feature"
+    "featured-article",
+    "editorial-index",
+    "columns-promo",
+    "gallery"
   ]
 }

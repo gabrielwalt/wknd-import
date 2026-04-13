@@ -1,7 +1,6 @@
 /*
- * Accordion FAQ Block
- * Recreate an accordion for FAQ sections
- * https://www.hlx.live/developer/block-collection/accordion
+ * FAQ List Block
+ * Expandable FAQ items with animated open/close
  */
 
 function animateAccordion(details, summary) {
@@ -50,17 +49,17 @@ function animateAccordion(details, summary) {
 
 export default function decorate(block) {
   [...block.children].forEach((row) => {
-    // decorate accordion item label
+    // decorate item label
     const label = row.children[0];
     const summary = document.createElement('summary');
-    summary.className = 'accordion-faq-item-label';
+    summary.className = 'faq-list-item-label';
     summary.append(...label.childNodes);
-    // decorate accordion item body
+    // decorate item body
     const body = row.children[1];
-    body.className = 'accordion-faq-item-body';
-    // decorate accordion item
+    body.className = 'faq-list-item-body';
+    // decorate item
     const details = document.createElement('details');
-    details.className = 'accordion-faq-item';
+    details.className = 'faq-list-item';
     details.append(summary, body);
     row.replaceWith(details);
 

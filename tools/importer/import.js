@@ -4,16 +4,16 @@
 // PARSER IMPORTS — all 14 parsers
 import heroParser from './parsers/hero-full.js';
 import heroArticleParser from './parsers/hero-article.js';
-import columnsFeaturedParser from './parsers/columns-featured.js';
+import featuredArticleParser from './parsers/featured-article.js';
 import columnsGalleryParser from './parsers/columns-gallery.js';
-import columnsNumberedParser from './parsers/columns-numbered.js';
+import editorialIndexParser from './parsers/editorial-index.js';
 import columnsPromoParser from './parsers/columns-promo.js';
-import columnsSidebarParser from './parsers/columns-sidebar.js';
+import columnsPullquoteParser from './parsers/columns-sidebar.js';
 import columnsAboutParser from './parsers/columns-about.js';
 import tabsActivityParser from './parsers/tabs-activity.js';
 import tabsTeamParser from './parsers/tabs-team.js';
 import tickerParser from './parsers/ticker.js';
-import accordionFaqParser from './parsers/accordion-faq.js';
+import faqListParser from './parsers/faq-list.js';
 import cardsArticleParser from './parsers/cards-article.js';
 import cardsFeatureParser from './parsers/cards-feature.js';
 
@@ -37,23 +37,27 @@ const BLOCK_REGISTRY = [
   { name: 'tabs-team', selectors: ['section:has(.tab-menu):has(.profile-circle)'], parser: tabsTeamParser },
   { name: 'tabs', selectors: ['section:has(.tab-menu):not(:has(.tab-container)):not(:has(.profile-circle))'], parser: tabsActivityParser },
 
+  // Featured article (standalone block, was columns-featured)
+  { name: 'featured-article', selectors: ['.featured-article'], parser: featuredArticleParser },
+
+  // Editorial index (standalone block, was columns-numbered)
+  { name: 'editorial-index', selectors: ['.editorial-index'], parser: editorialIndexParser },
+
   // Columns variants
-  { name: 'columns-featured', selectors: ['.featured-article'], parser: columnsFeaturedParser },
-  { name: 'columns-numbered', selectors: ['.editorial-index'], parser: columnsNumberedParser },
   { name: 'columns-promo', selectors: ['.grid-layout.grid-layout--2col', '.accent-section .grid-layout.tablet-1-column:has(.card)'], parser: columnsPromoParser },
-  { name: 'columns-sidebar', selectors: ['.secondary-section .grid-layout.desktop-3-column.grid-align-center'], parser: columnsSidebarParser },
+  { name: 'columns-pullquote', selectors: ['.secondary-section .grid-layout.desktop-3-column.grid-align-center'], parser: columnsPullquoteParser },
   { name: 'columns-about', selectors: ['.grid-layout.grid-gap-xxl.tablet-1-column'], parser: columnsAboutParser },
 
   // Cards — before columns-gallery to prevent false matches on .desktop-3-column grids
   { name: 'cards-feature', selectors: ['.grid-layout.desktop-3-column.grid-gap-lg:has(.feature-card)'], parser: cardsFeatureParser },
   { name: 'cards-article', selectors: ['.grid-layout.desktop-3-column:has(.article-card)'], parser: cardsArticleParser },
 
-  // columns-gallery must come after cards to avoid matching card grids
-  { name: 'columns-gallery', selectors: ['.inverse-section .grid-layout.desktop-3-column:not(:has(.article-card)):not(:has(.feature-card))'], parser: columnsGalleryParser },
+  // Gallery must come after cards to avoid matching card grids
+  { name: 'gallery', selectors: ['.inverse-section .grid-layout.desktop-3-column:not(:has(.article-card)):not(:has(.feature-card))'], parser: columnsGalleryParser },
 
   // Standalone blocks
   { name: 'ticker', selectors: ['.ticker-strip'], parser: tickerParser },
-  { name: 'accordion-faq', selectors: ['.faq-list'], parser: accordionFaqParser },
+  { name: 'faq-list', selectors: ['.faq-list'], parser: faqListParser },
 ];
 
 /**

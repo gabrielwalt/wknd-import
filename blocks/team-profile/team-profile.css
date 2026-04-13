@@ -1,0 +1,64 @@
+/* stylelint-disable no-descending-specificity */
+
+/* Team Profile block — circular avatar + name/role + bio layout */
+
+.team-profile > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+}
+
+/* avatar column */
+.team-profile .team-profile-avatar {
+  line-height: 0;
+}
+
+.team-profile .team-profile-avatar p {
+  margin: 0;
+}
+
+/* profile avatar */
+.team-profile img {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  border: 3px solid var(--accent-color);
+  object-fit: cover;
+}
+
+/* profile name */
+.team-profile h3 {
+  margin-bottom: var(--gap-sm);
+}
+
+/* profile role */
+.team-profile em {
+  font-style: normal;
+  color: var(--text-color-muted);
+  font-size: 14px;
+}
+
+/* bio paragraphs */
+.team-profile p {
+  color: var(--text-color-muted);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+@media (width >= 900px) {
+  /* desktop: avatar left, text right */
+  .team-profile > div {
+    display: flex;
+    flex-direction: row;
+    gap: var(--gap-lg);
+    align-items: start;
+  }
+
+  .team-profile .team-profile-avatar {
+    flex-shrink: 0;
+  }
+
+  .team-profile .team-profile-text {
+    flex: 1;
+  }
+}

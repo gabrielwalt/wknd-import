@@ -1,6 +1,6 @@
 /* stylelint-disable no-descending-specificity -- consolidated variant file */
 
-/* Columns block — base + variants (about, numbered, featured, promo, sidebar) */
+/* Columns block — base + variants (columns-about, columns-promo, columns-pullquote) */
 
 /* ===== Base columns ===== */
 .columns > div {
@@ -68,175 +68,6 @@
 
   .columns.columns-about > div > div {
     order: unset;
-  }
-}
-
-/* ===== Columns Numbered variant ===== */
-.columns.columns-numbered > div {
-  display: grid;
-  grid-template-columns: 60px 1fr;
-  gap: var(--gap-lg);
-  align-items: start;
-  border-top: 1px solid var(--accent-color);
-  padding: var(--gap-xl) 0;
-}
-
-.columns.columns-numbered > div:last-child {
-  border-bottom: 1px solid var(--accent-color);
-}
-
-/* number column */
-.columns.columns-numbered > div > div:first-child {
-  font-family: var(--heading-font-family);
-  font-size: 48px;
-  font-weight: 700;
-  color: var(--accent-color);
-  letter-spacing: -0.03em;
-  line-height: 1;
-}
-
-/* content column */
-.columns.columns-numbered > div > div:last-child h3 {
-  margin-bottom: var(--gap-md);
-}
-
-.columns.columns-numbered > div > div:last-child p {
-  color: var(--text-color-muted);
-  line-height: 1.7;
-}
-
-@media (width >= 900px) {
-  .columns.columns-numbered > div {
-    grid-template-columns: 80px 1fr;
-    gap: var(--gap-2xl);
-  }
-
-  .columns.columns-numbered > div > div:first-child {
-    font-size: 56px;
-  }
-}
-
-/* ===== Columns Featured variant ===== */
-.columns.columns-featured > div {
-  gap: var(--gap-lg);
-}
-
-.columns.columns-featured > div > div:not(.columns-img-col) {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* featured image — constrained height with cover */
-.columns.columns-featured > div > .columns-img-col {
-  overflow: hidden;
-  border-radius: var(--card-border-radius);
-  max-height: 20rem;
-}
-
-.columns.columns-featured > div > .columns-img-col img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* tag pill — first paragraph in content column */
-.columns.columns-featured > div > div:not(.columns-img-col) > p:first-child {
-  display: inline-block;
-  font-family: var(--heading-font-family);
-  font-size: var(--tag-font-size);
-  font-weight: 600;
-  letter-spacing: var(--tag-letter-spacing);
-  background-color: var(--accent-color);
-  color: var(--background-color);
-  padding: var(--tag-padding);
-  border-radius: var(--button-border-radius);
-  width: fit-content;
-}
-
-/* also support em tag pills */
-.columns.columns-featured em {
-  display: inline-block;
-  font-style: normal;
-  font-family: var(--heading-font-family);
-  font-size: var(--tag-font-size);
-  font-weight: 600;
-  letter-spacing: var(--tag-letter-spacing);
-  background-color: var(--accent-color);
-  color: var(--background-color);
-  padding: var(--tag-padding);
-  border-radius: var(--button-border-radius);
-  margin-right: var(--gap-sm);
-}
-
-.columns.columns-featured h2 {
-  margin-top: var(--gap-sm);
-}
-
-.columns.columns-featured > div > div:not(.columns-img-col) > p {
-  color: var(--text-color-muted);
-}
-
-/* button paragraph — separator line + right-aligned on desktop */
-.columns.columns-featured > div > div:not(.columns-img-col) > p:last-child {
-  margin-top: var(--gap-sm);
-  padding-top: 12px;
-  border-top: 1px solid var(--border-color-light);
-}
-
-/* style link as dark button */
-.columns.columns-featured > div > div:not(.columns-img-col) > p:last-child > a:any-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--heading-font-family);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.98px;
-  text-decoration: none;
-  padding: 12px 32px;
-  background-color: var(--dark-color);
-  color: var(--background-color);
-  border-radius: var(--button-border-radius);
-  box-shadow: 3px 3px 0 var(--accent-color);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.columns.columns-featured > div > div:not(.columns-img-col) > p:last-child > a:any-link:hover {
-  transform: translateY(-2px);
-  box-shadow: 5px 5px 0 var(--accent-color);
-}
-
-.columns.columns-featured > div > div:not(.columns-img-col) > p:last-child > a:any-link:active {
-  transform: translateY(0);
-  box-shadow: 0 0 0 var(--accent-color);
-}
-
-@media (width >= 480px) {
-  .columns.columns-featured > div > div:not(.columns-img-col) > p:last-child {
-    text-align: right;
-  }
-
-  .columns.columns-featured > div > div:not(.columns-img-col) > p:last-child > a:any-link {
-    display: inline-flex;
-  }
-}
-
-@media (width >= 900px) {
-  .columns.columns-featured > div {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: var(--gap-2xl);
-  }
-
-  .columns.columns-featured > div > div {
-    order: unset;
-  }
-
-  .columns.columns-featured > div > .columns-img-col {
-    max-height: 400px;
   }
 }
 
@@ -331,38 +162,38 @@
   }
 }
 
-/* ===== Columns Sidebar variant ===== */
-.columns.columns-sidebar > div {
+/* ===== Columns Pullquote variant ===== */
+.columns.columns-pullquote > div {
   gap: var(--gap-lg);
 }
 
 /* gear list column */
-.columns.columns-sidebar > div > div:first-child h3 {
+.columns.columns-pullquote > div > div:first-child h3 {
   margin-bottom: var(--gap-md);
 }
 
-.columns.columns-sidebar > div > div:first-child ul {
+.columns.columns-pullquote > div > div:first-child ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.columns.columns-sidebar > div > div:first-child li {
+.columns.columns-pullquote > div > div:first-child li {
   padding: 12px 0;
   border-bottom: 1px solid var(--border-color-light);
   font-weight: 500;
 }
 
 /* pull quote column */
-.columns.columns-sidebar > div > div:last-child {
+.columns.columns-pullquote > div > div:last-child {
   background-color: var(--dark-color);
   border-radius: var(--card-border-radius);
   padding: var(--gap-xl);
   color: var(--background-color);
 }
 
-.columns.columns-sidebar > div > div:last-child blockquote,
-.columns.columns-sidebar > div > div:last-child p {
+.columns.columns-pullquote > div > div:last-child blockquote,
+.columns.columns-pullquote > div > div:last-child p {
   color: var(--background-color);
   font-size: 24px;
   font-style: italic;
@@ -370,14 +201,14 @@
   margin: 0 0 var(--gap-md);
 }
 
-.columns.columns-sidebar > div > div:last-child em {
+.columns.columns-pullquote > div > div:last-child em {
   font-style: normal;
   color: var(--text-color-muted);
   font-size: 14px;
 }
 
 @media (width >= 900px) {
-  .columns.columns-sidebar > div {
+  .columns.columns-pullquote > div {
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: var(--gap-lg);

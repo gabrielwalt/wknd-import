@@ -1,11 +1,8 @@
 /* stylelint-disable no-descending-specificity -- section header + block selectors */
 
-/* Accordion FAQ — Expandable FAQ items with rounded pill borders
- * Merged: wknd-import accordion-faq structure + boilerplate faq visual design
- * Uses <details>/<summary> HTML; class names match wknd-import JS expectations.
- */
+/* FAQ List — Expandable FAQ items with rounded pill borders */
 
-.accordion-faq {
+.faq-list {
   --faq-max-width: 768px;
   --faq-question-font-size: var(--body-font-size-m, 18px);
   --faq-question-font-weight: 600;
@@ -26,7 +23,7 @@
 /* --- Header row: heading + link side-by-side --- */
 
 /* When heading is inside the block (boilerplate pattern) */
-.accordion-faq > div:first-child {
+.faq-list > div:first-child {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
@@ -34,16 +31,16 @@
   margin-bottom: var(--faq-heading-margin-bottom);
 }
 
-.accordion-faq > div:first-child > div:first-child {
+.faq-list > div:first-child > div:first-child {
   flex: 1 1 auto;
 }
 
-.accordion-faq > div:first-child h2 {
+.faq-list > div:first-child h2 {
   margin: 0;
   font-family: var(--heading-font-family);
 }
 
-.accordion-faq > div:first-child a {
+.faq-list > div:first-child a {
   font-family: var(--heading-font-family);
   font-size: 14px;
   font-weight: 700;
@@ -56,7 +53,7 @@
 }
 
 /* When heading is in section default-content-wrapper (EDS import pattern) */
-.accordion-faq-container > .default-content-wrapper {
+.faq-list-container > .default-content-wrapper {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -66,17 +63,17 @@
   margin: 0 auto var(--faq-heading-margin-bottom, 32px);
 }
 
-.accordion-faq-container > .default-content-wrapper h2 {
+.faq-list-container > .default-content-wrapper h2 {
   margin: 0;
   flex: 1 1 auto;
 }
 
-.accordion-faq-container > .default-content-wrapper p {
+.faq-list-container > .default-content-wrapper p {
   margin: 0;
   flex-shrink: 0;
 }
 
-.accordion-faq-container > .default-content-wrapper a {
+.faq-list-container > .default-content-wrapper a {
   font-family: var(--heading-font-family);
   font-size: 14px;
   font-weight: 700;
@@ -89,11 +86,11 @@
 }
 
 /* Reset button styling on links inside FAQ section header */
-.accordion-faq-container > .default-content-wrapper .button-container {
+.faq-list-container > .default-content-wrapper .button-container {
   display: inline;
 }
 
-.accordion-faq-container > .default-content-wrapper a.button:any-link {
+.faq-list-container > .default-content-wrapper a.button:any-link {
   background: none;
   border: none;
   border-radius: 0;
@@ -108,14 +105,14 @@
   color: var(--text-color);
 }
 
-.accordion-faq-container > .default-content-wrapper a.button:hover {
+.faq-list-container > .default-content-wrapper a.button:hover {
   transform: none;
   box-shadow: none;
   background: none;
 }
 
 /* --- FAQ item (details element) — rounded pill with hover accent --- */
-.accordion-faq details {
+.faq-list details {
   border: 1px solid var(--faq-border-color);
   border-radius: 16px;
   overflow: hidden;
@@ -123,20 +120,20 @@
   transition: border-color 0.15s ease;
 }
 
-.accordion-faq details:hover {
+.faq-list details:hover {
   border-color: var(--faq-accent-color);
 }
 
-.accordion-faq details p {
+.faq-list details p {
   margin-bottom: 0.8em;
 }
 
-.accordion-faq details summary p {
+.faq-list details summary p {
   margin: 0;
 }
 
 /* --- Question (summary) — flex layout with plus icon --- */
-.accordion-faq details summary {
+.faq-list details summary {
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -154,23 +151,23 @@
   transition: background-color 0.15s ease;
 }
 
-.accordion-faq details summary::-webkit-details-marker {
+.faq-list details summary::-webkit-details-marker {
   display: none;
 }
 
-/* Hover: warm background on question row (boilerplate refinement) */
-.accordion-faq details summary:hover {
+/* Hover: warm background on question row */
+.faq-list details summary:hover {
   background-color: var(--faq-hover-bg);
 }
 
 /* Open state: keep hover background on summary */
-.accordion-faq details[open] summary {
+.faq-list details[open] summary {
   background-color: var(--faq-hover-bg);
   border-radius: 15px 15px 0 0;
 }
 
-/* Plus icon → rotates 45° to × when open (boilerplate pattern) */
-.accordion-faq details summary::after {
+/* Plus icon → rotates 45° to × when open */
+.faq-list details summary::after {
   content: "+";
   font-size: 20px;
   font-weight: 400;
@@ -180,24 +177,24 @@
   transition: transform 0.3s ease;
 }
 
-.accordion-faq details[open] summary::after {
+.faq-list details[open] summary::after {
   transform: rotate(45deg);
 }
 
 /* --- Answer body — smooth reveal --- */
-.accordion-faq details .accordion-faq-item-body {
+.faq-list details .faq-list-item-body {
   padding: var(--faq-answer-padding);
   color: var(--faq-answer-color);
   font-family: var(--body-font-family);
   line-height: 1.7;
 }
 
-.accordion-faq details .accordion-faq-item-body a {
+.faq-list details .faq-list-item-body a {
   color: var(--faq-accent-color);
   text-decoration: underline;
 }
 
-.accordion-faq details[open] .accordion-faq-item-body {
+.faq-list details[open] .faq-list-item-body {
   border-top: 1px solid var(--faq-border-color);
   background-color: var(--background-color);
 }

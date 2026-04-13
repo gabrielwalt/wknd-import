@@ -2,16 +2,14 @@
   "status": "success",
   "url": "https://wknd-adventures.com/community.html",
   "path": "community",
-  "timestamp": "2026-04-12T18:54:37.600Z",
+  "timestamp": "2026-04-13T11:14:15.806Z",
   "title": "Community — WKND Adventures",
   "blocks": [
     "hero",
-    "columns-featured",
-    "columns-featured",
-    "columns-numbered",
-    "columns-promo",
+    "featured-article",
+    "featured-article",
+    "editorial-index",
     "cards-article",
-    "cards-article",
-    "accordion-faq"
+    "faq-list"
   ]
 }

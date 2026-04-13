@@ -1,6 +1,11 @@
 // eslint-disable-next-line import/no-unresolved
-import { toClassName } from '../../scripts/aem.js';
+import { loadBlock, toClassName } from '../../scripts/aem.js';
 
+/**
+ * Generic tab container block.
+ * Tab panels can contain any content, including nested blocks.
+ * Content structure: each row = [tab-label | panel-content]
+ */
 export default async function decorate(block) {
   // build tablist
   const tablist = document.createElement('div');
@@ -47,26 +52,22 @@ export default async function decorate(block) {
 
   block.prepend(tablist);
 
-  // Restructure tabs-team: group avatar and text into two columns
-  if (block.classList.contains('tabs-team')) {
-    block.querySelectorAll('.tabs-panel').forEach((panel) => {
-      const wrapper = panel.querySelector(':scope > div');
-      if (!wrapper) return;
-      const imgEl = wrapper.querySelector(':scope > p > img') || wrapper.querySelector(':scope > picture');
-      if (!imgEl) return;
-      const imgContainer = imgEl.closest('p') || imgEl.closest('picture');
-      const avatarCol = document.createElement('div');
-      avatarCol.className = 'tabs-team-avatar';
-      avatarCol.append(imgContainer);
-      const textCol = document.createElement('div');
-      textCol.className = 'tabs-team-text';
-      [...wrapper.children].forEach((child) => textCol.append(child));
-      wrapper.replaceChildren(avatarCol, textCol);
+  // Discover and load any nested blocks inside tab panels
+  block.querySelectorAll('.tabs-panel').forEach((panel) => {
+    const wrapper = panel.querySelector(':scope > div');
+    if (!wrapper) return;
+
+    // Check for block tables (nested blocks authored inside tabs)
+    wrapper.querySelectorAll(':scope > div[class]').forEach(async (nestedBlock) => {
+      const blockName = nestedBlock.className.split(' ')[0];
+      if (blockName && blockName !== 'tabs-panel') {
+        await loadBlock(nestedBlock);
+      }
     });
-    return;
-  }
+  });
 
   // Restructure card-like content in panels into individual card divs
+  // (for activity browser tabs with inline card content)
   block.querySelectorAll('.tabs-panel').forEach((panel) => {
     const wrapper = panel.querySelector(':scope > div');
     if (!wrapper) return;

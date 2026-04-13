@@ -2,14 +2,13 @@
   "status": "success",
   "url": "https://wknd-adventures.com/expeditions.html",
   "path": "expeditions",
-  "timestamp": "2026-04-12T18:54:57.641Z",
+  "timestamp": "2026-04-13T11:14:36.799Z",
   "title": "Expeditions — WKND Adventures",
   "blocks": [
     "hero",
     "tabs-activity",
-    "columns-numbered",
-    "columns-numbered",
-    "columns-promo",
+    "editorial-index",
+    "editorial-index",
     "cards-article"
   ]
 }

@@ -5,19 +5,21 @@
 
 ---
 
-## Blocks (10 total)
+## Blocks (13 total)
 
-Blocks use EDS variant convention: `Block (variant)` in authoring → `class="block variant"` in HTML.
-All variants share a single CSS/JS file under the base block folder.
+Mix of standalone blocks and block families with CSS variants.
 
 | Block | Variants | CSS Notes |
 |-------|----------|-----------|
-| `hero` | `hero-article` | Full-bleed overlay hero. Base (no variant) = landing pages with eyebrow, gradient overlay, CTA buttons. `hero-article` = blog posts with breadcrumbs, tag pills, author avatar. |
+| `hero` | `article` | Full-bleed overlay hero. Base (no variant) = landing pages with eyebrow, gradient overlay, CTA buttons. `article` = blog posts with breadcrumbs, tag pills, author avatar. |
 | `cards` | `cards-article`, `cards-feature` | `cards-article` = image+body grid with hover effects. `cards-feature` = glass text-only cards (dark section). Shared internal classes: `cards-card-image`, `cards-card-body`. |
-| `columns` | `columns-about`, `columns-numbered`, `columns-featured`, `columns-promo`, `columns-sidebar` | 5 variants in one file. `columns-promo` uses `:has()` for narrow container. `columns-sidebar` has pull-quote dark panel. Shared internal class: `columns-img-col`. |
-| `tabs` | `tabs-team` | Base = activity browser (card grid panels). `tabs-team` = profile layout with circular avatars. Generic classes: `tabs-list`, `tabs-panel`, `tabs-tab`. |
-| `gallery` | _(none)_ | Standalone block (renamed from columns-gallery). Photo grid. |
-| `accordion-faq` | _(none)_ | Uses native `<details>/<summary>`. |
+| `columns` | `columns-about`, `columns-promo`, `columns-pullquote` | 3 variants in one file. `columns-promo` uses `:has()` for narrow container. `columns-pullquote` has pull-quote dark panel. Shared internal class: `columns-img-col`. |
+| `featured-article` | _(none)_ | Standalone block. Image + content side-by-side with tag pill, CTA button. Internal class: `featured-article-img-col`. |
+| `editorial-index` | _(none)_ | Standalone block. Numbered items with large accent numbers. Grid layout: number + content. |
+| `tabs` | _(none)_ | Generic tab container. Can nest any block inside panels. Base has inline card grid styling for activity browser. |
+| `team-profile` | _(none)_ | Standalone block. Circular avatar + name/role + bio. Typically nested inside `tabs` on team pages. |
+| `gallery` | _(none)_ | Standalone block. Photo grid. |
+| `faq-list` | _(none)_ | Uses native `<details>/<summary>` with animated open/close. |
 | `ticker` | _(none)_ | Horizontal scrolling tag ticker. |
 | `header` | _(none)_ | Sticky nav bar with megamenu (3 panels: Explore, Stories, Info). Desktop hover+click, mobile hamburger. |
 | `footer` | _(none)_ | Dark 4-column layout: brand+tagline, Explore links, Recent Stories links, Info links + bottom bar. |
@@ -27,15 +29,16 @@ All variants share a single CSS/JS file under the base block folder.
 
 ```
 .hero { ... }                     /* base hero (full-bleed overlay) — no variant needed */
-.hero.hero-article { ... }        /* variant for blog article pages */
+.hero.article { ... }             /* variant for blog article pages */
 .cards.cards-article { ... }
 .cards.cards-feature { ... }
 .columns.columns-about { ... }
-.columns.columns-numbered { ... }
-.columns.columns-featured { ... }
 .columns.columns-promo { ... }
-.columns.columns-sidebar { ... }
-.tabs.tabs-team { ... }
+.columns.columns-pullquote { ... }
+.featured-article { ... }         /* standalone block */
+.editorial-index { ... }          /* standalone block */
+.faq-list { ... }                 /* standalone block */
+.team-profile { ... }             /* standalone block, nestable in tabs */
 ```
 
 ### Container-level variant targeting
@@ -117,71 +120,67 @@ Primary (black + amber shadow), Ghost (outline + amber shadow), Accent (amber + 
 
 ## Pages (16 total)
 
-### Landing pages (import-homepage.js)
+### Landing pages
 | Page | Blocks |
 |------|--------|
-| `index` | hero, columns-featured, tabs, ticker, columns-numbered, gallery, accordion-faq |
+| `index` | hero, featured-article, tabs, ticker, editorial-index, gallery, faq-list |
 
-### Hub/landing pages (import-hub-landing-page.js)
+### Hub/landing pages
 | Page | Blocks |
 |------|--------|
-| `adventures` | hero, columns-featured, tabs, columns-numbered, cards-article, columns-promo |
-| `expeditions` | hero, columns-numbered, tabs, cards-article, columns-promo |
-| `destinations` | hero, columns-featured, columns-numbered, cards-article, columns-promo |
-| `gear` | hero, columns-featured, tabs, columns-numbered, cards-article |
+| `adventures` | hero, featured-article, tabs, editorial-index, cards-article, columns-promo |
+| `expeditions` | hero, editorial-index, tabs, cards-article, columns-promo |
+| `destinations` | hero, featured-article, editorial-index, cards-article, columns-promo |
+| `gear` | hero, featured-article, tabs, editorial-index, cards-article |
 
-### Editorial/section pages (import-editorial-section-page.js)
+### Editorial/section pages
 | Page | Blocks |
 |------|--------|
-| `field-notes` | hero, columns-featured, tabs, columns-promo |
-| `community` | hero, columns-featured |
-| `sustainability` | hero, columns-numbered, columns-featured |
+| `field-notes` | hero, featured-article, tabs, columns-promo |
+| `community` | hero, featured-article |
+| `sustainability` | hero, editorial-index, featured-article |
 
-### Informational pages (import-informational-page.js)
+### Informational pages
 | Page | Blocks |
 |------|--------|
-| `about` | hero, columns-about, cards-feature, tabs-team, cards-article |
-| `faq` | hero, accordion-faq, columns-promo, cards-article |
+| `about` | hero, columns-about, cards-feature, tabs (with nested team-profile), cards-article |
+| `faq` | hero, faq-list, columns-promo, cards-article |
 
-### Blog articles (import-blog-article.js)
+### Blog articles
 | Page | Blocks |
 |------|--------|
-| `blog/patagonia-trek` | hero-article, columns-sidebar, gallery, cards-article |
-| `blog/alpine-cycling` | hero-article, columns-sidebar, gallery, cards-article |
-| `blog/kayaking-norway` | hero-article, columns-sidebar, gallery, cards-article |
-| `blog/mountain-photography` | hero-article, columns-sidebar, gallery, cards-article |
-| `blog/ultralight-backpacking` | hero-article, columns-sidebar, gallery, cards-article |
-| `blog/yosemite-rock-climbing` | hero-article, columns-sidebar, gallery, cards-article |
+| `blog/patagonia-trek` | hero (article), columns-pullquote, gallery, cards-article |
+| `blog/alpine-cycling` | hero (article), columns-pullquote, gallery, cards-article |
+| `blog/kayaking-norway` | hero (article), columns-pullquote, gallery, cards-article |
+| `blog/mountain-photography` | hero (article), columns-pullquote, gallery, cards-article |
+| `blog/ultralight-backpacking` | hero (article), columns-pullquote, gallery, cards-article |
+| `blog/yosemite-rock-climbing` | hero (article), columns-pullquote, gallery, cards-article |
 
 ---
 
 ## Import Infrastructure
 
-### Import Scripts (tools/importer/)
-| Script | Template | Pages |
-|--------|----------|-------|
-| `import-homepage.js` | homepage | index |
-| `import-hub-landing-page.js` | hub-landing-page | adventures, expeditions, destinations, gear |
-| `import-editorial-section-page.js` | editorial-section-page | field-notes, community, sustainability |
-| `import-informational-page.js` | informational-page | about, faq |
-| `import-blog-article.js` | blog-article | 6 blog posts |
+### Import Script (tools/importer/)
+Single unified import script (`import.js`) with content-driven block detection via `BLOCK_REGISTRY`.
 
 ### Parsers (tools/importer/parsers/) — 14 files
-`hero-full.js`, `hero-article.js`, `columns-featured.js`, `columns-numbered.js`, `columns-gallery.js`, `columns-about.js`, `columns-sidebar.js`, `columns-promo.js`, `cards-article.js`, `cards-feature.js`, `tabs-activity.js`, `tabs-team.js`, `accordion-faq.js`, `ticker.js`
+`hero-full.js`, `hero-article.js`, `featured-article.js`, `editorial-index.js`, `columns-gallery.js`, `columns-about.js`, `columns-sidebar.js`, `columns-promo.js`, `cards-article.js`, `cards-feature.js`, `tabs-activity.js`, `tabs-team.js`, `faq-list.js`, `ticker.js`
 
 Parser output names (what goes into content HTML):
 - `Hero` → `class="hero"` (base hero, no variant — used on all landing/hub/info pages)
-- `Hero (hero-article)` → `class="hero hero-article"`
+- `Hero (article)` → `class="hero article"`
 - `Cards (cards-article)` → `class="cards cards-article"`
 - `Cards (cards-feature)` → `class="cards cards-feature"`
+- `Featured Article` → `class="featured-article"` (standalone block)
+- `Editorial Index` → `class="editorial-index"` (standalone block)
 - `Columns (columns-about)` → `class="columns columns-about"`
-- `Columns (columns-numbered)` → `class="columns columns-numbered"`
-- `Columns (columns-featured)` → `class="columns columns-featured"`
 - `Columns (columns-promo)` → `class="columns columns-promo"`
-- `Columns (columns-sidebar)` → `class="columns columns-sidebar"`
+- `Columns (columns-pullquote)` → `class="columns columns-pullquote"`
 - `Gallery` → `class="gallery"`
-- `Tabs` → `class="tabs"`
-- `Tabs (tabs-team)` → `class="tabs tabs-team"`
+- `Tabs` → `class="tabs"` (generic container, can nest blocks)
+- `Team Profile` → `class="team-profile"` (nested inside tabs on about page)
+- `Faq List` → `class="faq-list"` (standalone block)
+- `Ticker` → `class="ticker"`
 
 ### Transformers (tools/importer/transformers/)
 - `wknd-cleanup.js` — removes nav, footer, scripts, etc.
@@ -217,23 +216,31 @@ The hero block restructures the EDS table DOM into a full-bleed background image
 Detects image-only columns and adds `columns-img-col` class:
 - **Primary check:** `col.querySelector('picture')` — for images that EDS has wrapped in `<picture>`
 - **Fallback check:** `col.querySelector(':scope > p > img')` — for images inside `<p>` tags (typical from imports)
-- Without this fallback, image columns don't get the `columns-img-col` class, breaking featured/about/sidebar layouts.
+- Without this fallback, image columns don't get the `columns-img-col` class, breaking about/promo/pullquote layouts.
+
+### featured-article.js
+Same image detection pattern as columns.js but uses `featured-article-img-col` class.
+
+### tabs.js
+Generic tab container. Handles tab UI (buttons, ARIA, panel switching). Discovers and loads nested blocks inside tab panels. Also restructures inline card-like content (images + headings) into card divs for activity browser panels.
+
+### team-profile.js
+Detects avatar image column and adds `team-profile-avatar` / `team-profile-text` classes.
 
 ---
 
-## Block CSS — Variant Implementation Notes
+## Block CSS — Implementation Notes
 
-### columns-numbered
+### editorial-index
 - Uses `border-top` on all items + `border-bottom` only on `:last-child` to avoid double borders between adjacent items.
 - Number column: 48px (mobile) / 56px (desktop) Syncopate font, amber color.
 - Desktop grid: `80px 1fr`.
 
-### columns-featured
+### featured-article
 - Image column uses `overflow: hidden` + `max-height` (20rem mobile, 400px desktop) with `object-fit: cover` to constrain images that are inside `<p>` wrappers.
 - Tag pill targets `p:first-child` in content column (imported content uses `<p>Water</p>` not `<em>Water</em>`). Also supports `em` for future content corrections.
-- Avatar targets `p:nth-last-child(2) > img` (positional, since imported content lacks `alt="avatar"` or `width="56"` attributes).
-- "Read the Story" link is styled as an accent button via block CSS since imported content lacks `<strong>` wrapper for EDS button decoration.
-- Footer layout: byline paragraph uses flex, button paragraph uses `text-align: right`.
+- "Read the Story" link is styled as a dark button via block CSS since imported content lacks `<strong>` wrapper for EDS button decoration.
+- Footer layout: button paragraph uses `text-align: right`.
 
 ---
 

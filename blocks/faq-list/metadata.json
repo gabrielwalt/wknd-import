@@ -1,6 +1,6 @@
 {
-  "variantName": "accordion-faq",
-  "baseBlock": "accordion",
+  "variantName": "faq-list",
+  "baseBlock": "faq-list",
   "version": "1.0.0",
   "created": "2026-03-25T18:51:00.000Z",
   "sourceContext": {

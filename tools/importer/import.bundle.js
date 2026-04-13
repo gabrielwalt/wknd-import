@@ -118,13 +118,13 @@ var CustomImportScript = (() => {
     }
     cells.push([contentWrapper]);
     const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Hero (hero-article)",
+      name: "Hero (article)",
       cells
     });
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/columns-featured.js
+  // tools/importer/parsers/featured-article.js
   function parse3(element, { document: document2 }) {
     const image = element.querySelector(".featured-article-image img, :scope > a img");
     const tag = element.querySelector(".tag");
@@ -144,7 +144,7 @@ var CustomImportScript = (() => {
       [image || "", contentCol]
     ];
     const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Columns (columns-featured)",
+      name: "Featured Article",
       cells
     });
     element.replaceWith(block);
@@ -168,7 +168,7 @@ var CustomImportScript = (() => {
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/columns-numbered.js
+  // tools/importer/parsers/editorial-index.js
   function parse5(element, { document: document2 }) {
     const items = element.querySelectorAll(".editorial-index-item");
     const cells = [];
@@ -178,7 +178,7 @@ var CustomImportScript = (() => {
       cells.push([number || "", content || ""]);
     });
     const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Columns (columns-numbered)",
+      name: "Editorial Index",
       cells
     });
     element.replaceWith(block);
@@ -270,7 +270,7 @@ var CustomImportScript = (() => {
     }
     cells.push([col1, col2]);
     const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Columns (columns-sidebar)",
+      name: "Columns (columns-pullquote)",
       cells
     });
     element.replaceWith(block);
@@ -336,27 +336,28 @@ var CustomImportScript = (() => {
     tabButtons.forEach((button, i) => {
       const tabLabel = document2.createElement("div");
       tabLabel.textContent = button.textContent.trim();
-      const tabContent = document2.createElement("div");
       const pane = tabPanes[i];
+      const profileCells = [];
       if (pane) {
+        const avatarCol = document2.createElement("div");
         const profileImg = pane.querySelector(".profile-circle img");
         if (profileImg) {
-          const img = profileImg.cloneNode(true);
-          tabContent.appendChild(img);
+          avatarCol.appendChild(profileImg.cloneNode(true));
         }
         const name = pane.querySelector(".profile-name");
         if (name) {
-          const h3 = document2.createElement("h3");
-          h3.textContent = name.textContent.trim();
-          tabContent.appendChild(h3);
+          const nameP = document2.createElement("p");
+          nameP.textContent = name.textContent.trim();
+          avatarCol.appendChild(nameP);
         }
+        const textCol = document2.createElement("div");
         const role = pane.querySelector(".profile-name + p");
         if (role) {
           const em = document2.createElement("em");
           em.textContent = role.textContent.trim();
           const p = document2.createElement("p");
           p.appendChild(em);
-          tabContent.appendChild(p);
+          textCol.appendChild(p);
         }
         const bioContainer = pane.querySelector(".team-profile-bio");
         if (bioContainer) {
@@ -364,14 +365,21 @@ var CustomImportScript = (() => {
           paragraphs.forEach((para) => {
             const newP = document2.createElement("p");
             newP.textContent = para.textContent.trim();
-            tabContent.appendChild(newP);
+            textCol.appendChild(newP);
           });
         }
+        profileCells.push([avatarCol, textCol]);
       }
+      const nestedBlock = WebImporter.Blocks.createBlock(document2, {
+        name: "Team Profile",
+        cells: profileCells
+      });
+      const tabContent = document2.createElement("div");
+      tabContent.appendChild(nestedBlock);
       cells.push([tabLabel, tabContent]);
     });
     const block = WebImporter.Blocks.createBlock(document2, {
-      name: "Tabs (tabs-team)",
+      name: "Tabs",
       cells
     });
     element.replaceWith(block);
@@ -406,28 +414,17 @@ var CustomImportScript = (() => {
     element.replaceWith(block);
   }
 
-  // tools/importer/parsers/accordion-faq.js
+  // tools/importer/parsers/faq-list.js
   function parse12(element, { document: document2 }) {
-    const faqItems = element.querySelectorAll(".faq-item");
+    const items = element.querySelectorAll(".faq-item");
     const cells = [];
-    faqItems.forEach((item) => {
-      const questionEl = item.querySelector(".faq-question");
-      let questionText = "";
-      if (questionEl) {
-        const clone = questionEl.cloneNode(true);
-        const icon = clone.querySelector(".faq-icon");
-        if (icon) icon.remove();
-        questionText = clone.textContent.trim();
-      }
+    items.forEach((item) => {
+      const question = item.querySelector(".faq-question");
       const answer = item.querySelector(".faq-answer");
-      const questionDiv = document2.createElement("div");
-      const questionP = document2.createElement("p");
-      questionP.textContent = questionText;
-      questionDiv.appendChild(questionP);
-      cells.push([questionDiv, answer || ""]);
+      cells.push([question || "", answer || ""]);
     });
     const block = WebImporter.Blocks.createBlock(document2, {
-      name: "accordion-faq",
+      name: "Faq List",
       cells
     });
     element.replaceWith(block);
@@ -610,20 +607,22 @@ var CustomImportScript = (() => {
     { name: "tabs-activity", selectors: [".tab-container.tab-container--wide"], parser: parse9 },
     { name: "tabs-team", selectors: ["section:has(.tab-menu):has(.profile-circle)"], parser: parse10 },
     { name: "tabs", selectors: ["section:has(.tab-menu):not(:has(.tab-container)):not(:has(.profile-circle))"], parser: parse9 },
+    // Featured article (standalone block, was columns-featured)
+    { name: "featured-article", selectors: [".featured-article"], parser: parse3 },
+    // Editorial index (standalone block, was columns-numbered)
+    { name: "editorial-index", selectors: [".editorial-index"], parser: parse5 },
     // Columns variants
-    { name: "columns-featured", selectors: [".featured-article"], parser: parse3 },
-    { name: "columns-numbered", selectors: [".editorial-index"], parser: parse5 },
     { name: "columns-promo", selectors: [".grid-layout.grid-layout--2col", ".accent-section .grid-layout.tablet-1-column:has(.card)"], parser: parse6 },
-    { name: "columns-sidebar", selectors: [".secondary-section .grid-layout.desktop-3-column.grid-align-center"], parser: parse7 },
+    { name: "columns-pullquote", selectors: [".secondary-section .grid-layout.desktop-3-column.grid-align-center"], parser: parse7 },
     { name: "columns-about", selectors: [".grid-layout.grid-gap-xxl.tablet-1-column"], parser: parse8 },
     // Cards — before columns-gallery to prevent false matches on .desktop-3-column grids
     { name: "cards-feature", selectors: [".grid-layout.desktop-3-column.grid-gap-lg:has(.feature-card)"], parser: parse14 },
     { name: "cards-article", selectors: [".grid-layout.desktop-3-column:has(.article-card)"], parser: parse13 },
-    // columns-gallery must come after cards to avoid matching card grids
-    { name: "columns-gallery", selectors: [".inverse-section .grid-layout.desktop-3-column:not(:has(.article-card)):not(:has(.feature-card))"], parser: parse4 },
+    // Gallery must come after cards to avoid matching card grids
+    { name: "gallery", selectors: [".inverse-section .grid-layout.desktop-3-column:not(:has(.article-card)):not(:has(.feature-card))"], parser: parse4 },
     // Standalone blocks
     { name: "ticker", selectors: [".ticker-strip"], parser: parse11 },
-    { name: "accordion-faq", selectors: [".faq-list"], parser: parse12 }
+    { name: "faq-list", selectors: [".faq-list"], parser: parse12 }
   ];
   function isDescendantOfMatched(el, matched) {
     let parent = el.parentElement;

@@ -1,6 +1,6 @@
 /* stylelint-disable no-descending-specificity -- consolidated variant file */
 
-/* Hero block — base (full-bleed overlay) + variants (hero-article, hero-centered) */
+/* Hero block — base (full-bleed overlay) + variants (article) */
 
 /* Shared: full-bleed container — no section padding on hero */
 main > .hero-container {
@@ -207,11 +207,11 @@ main .hero a.button.secondary:any-link:hover {
 }
 
 /* ===== Hero Article variant ===== */
-.hero.hero-article {
+.hero.article {
   min-height: min(55vh, 380px);
 }
 
-.hero.hero-article p {
+.hero.article p {
   font-size: inherit;
   line-height: inherit;
   max-width: none;
@@ -219,7 +219,7 @@ main .hero a.button.secondary:any-link:hover {
 }
 
 /* breadcrumbs — reset eyebrow styles from base */
-.hero.hero-article > div > p:first-child {
+.hero.article > div > p:first-child {
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
@@ -229,13 +229,13 @@ main .hero a.button.secondary:any-link:hover {
   margin-bottom: var(--gap-xl);
 }
 
-.hero.hero-article a {
+.hero.article a {
   color: rgb(255 255 255 / 70%);
   font-size: var(--body-font-size-s);
 }
 
 /* tag line — "Expedition · Americas · Hiking" */
-.hero.hero-article > div > p:nth-child(2) {
+.hero.article > div > p:nth-child(2) {
   font-family: var(--heading-font-family);
   font-size: var(--tag-font-size);
   font-weight: 600;
@@ -245,7 +245,7 @@ main .hero a.button.secondary:any-link:hover {
 }
 
 /* tag pills if em-wrapped */
-.hero.hero-article em {
+.hero.article em {
   display: inline-block;
   font-style: normal;
   font-family: var(--heading-font-family);
@@ -260,7 +260,7 @@ main .hero a.button.secondary:any-link:hover {
 }
 
 /* author avatar — paragraph right after h1 containing only an img */
-.hero.hero-article > div > h1 + p > img {
+.hero.article > div > h1 + p > img {
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -269,8 +269,8 @@ main .hero a.button.secondary:any-link:hover {
 }
 
 /* fallback: attribute-based avatar detection */
-.hero.hero-article img[width="44"],
-.hero.hero-article img[alt*="avatar"] {
+.hero.article img[width="44"],
+.hero.article img[alt*="avatar"] {
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -279,20 +279,20 @@ main .hero a.button.secondary:any-link:hover {
 }
 
 /* author name */
-.hero.hero-article > div > h1 + p + p {
+.hero.article > div > h1 + p + p {
   font-weight: 700;
   color: var(--background-color);
   margin-top: var(--gap-sm);
 }
 
 /* author date/read time */
-.hero.hero-article > div > h1 + p + p + p {
+.hero.article > div > h1 + p + p + p {
   color: var(--text-on-dark-muted);
   font-size: var(--body-font-size-s);
 }
 
 @media (width >= 600px) {
-  .hero.hero-article {
+  .hero.article {
     min-height: min(55vh, 420px);
   }
 }

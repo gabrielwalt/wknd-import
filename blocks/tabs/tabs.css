@@ -1,11 +1,10 @@
-/* stylelint-disable no-descending-specificity -- consolidated variant file */
+/* stylelint-disable no-descending-specificity */
 
-/* Tabs block — base (activity) + variant (tabs-team)
- * Merged: wknd-import tabs structure + boilerplate tabbed-cards visual polish
- * Class names match wknd-import JS expectations.
+/* Tabs block — generic tab container
+ * Tab panels can contain any nested blocks or inline card content.
  */
 
-/* --- Local design tokens (from boilerplate, mapped to wknd-import tokens) --- */
+/* --- Local design tokens --- */
 .tabs {
   --tabs-accent: var(--accent-color, rgb(232 101 26));
   --tabs-text: var(--dark-color, rgb(15 26 20));
@@ -15,7 +14,7 @@
   --tabs-gap: var(--gap-lg, 16px);
 }
 
-/* ===== Section heading above the block (boilerplate refinement) ===== */
+/* ===== Section heading above the block ===== */
 .section.tabs-container > .default-content-wrapper {
   margin-bottom: 32px;
 }
@@ -70,7 +69,7 @@
   border-bottom-color: var(--tabs-accent);
 }
 
-/* Inactive hover: muted, not black (boilerplate refinement) */
+/* Inactive hover: muted, not black */
 .tabs .tabs-list button:hover {
   color: var(--tabs-muted);
 }
@@ -95,7 +94,7 @@
   display: none;
 }
 
-/* ===== Article cards inside tabs ===== */
+/* ===== Inline card content inside tab panels ===== */
 .tabs .tabs-panel > div {
   display: block;
   border: 1px solid var(--border-color-light);
@@ -194,6 +193,24 @@
   text-decoration: none;
 }
 
+/* ===== Nested blocks inside tab panels =====
+   When a panel contains a nested block, reset card styling */
+.tabs .tabs-panel > .team-profile-wrapper,
+.tabs .tabs-panel > .cards-wrapper,
+.tabs .tabs-panel > .columns-wrapper {
+  border: none;
+  border-radius: 0;
+  background: none;
+  overflow: visible;
+}
+
+.tabs .tabs-panel > .team-profile-wrapper:hover,
+.tabs .tabs-panel > .cards-wrapper:hover,
+.tabs .tabs-panel > .columns-wrapper:hover {
+  background-color: transparent;
+  box-shadow: none;
+}
+
 /* ===== Responsive: tab buttons + card grid ===== */
 @media (width >= 600px) {
   .tabs .tabs-list button {
@@ -212,91 +229,5 @@
 
   .tabs .tabs-panel {
     grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* ===== Tabs Team variant ===== */
-.tabs.tabs-team .tabs-list {
-  margin-bottom: var(--gap-xl);
-}
-
-/* panel — override grid for profile layout */
-.tabs.tabs-team .tabs-panel {
-  display: block;
-  margin-top: 0;
-}
-
-.tabs.tabs-team .tabs-panel[aria-hidden='true'] {
-  display: none;
-}
-
-/* bio and role paragraphs */
-.tabs.tabs-team .tabs-panel p {
-  color: var(--tabs-muted);
-  font-size: 18px;
-  line-height: 1.6;
-}
-
-/* profile layout — stacked on mobile */
-.tabs.tabs-team .tabs-panel > div {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-md);
-  border: none;
-  border-radius: 0;
-  background: none;
-  transition: none;
-}
-
-.tabs.tabs-team .tabs-panel > div:hover {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-/* avatar column */
-.tabs.tabs-team .tabs-team-avatar {
-  line-height: 0;
-}
-
-.tabs.tabs-team .tabs-team-avatar p {
-  margin: 0;
-}
-
-/* profile avatar */
-.tabs.tabs-team .tabs-panel img {
-  width: 128px;
-  height: 128px;
-  border-radius: 50%;
-  border: 3px solid var(--tabs-accent);
-  object-fit: cover;
-}
-
-/* profile name */
-.tabs.tabs-team .tabs-panel h3 {
-  margin-bottom: var(--gap-sm);
-}
-
-/* profile role */
-.tabs.tabs-team .tabs-panel em {
-  font-style: normal;
-  color: var(--tabs-muted);
-  font-size: 14px;
-}
-
-@media (width >= 900px) {
-  /* desktop: avatar left, text right */
-  .tabs.tabs-team .tabs-panel > div {
-    display: flex;
-    flex-direction: row;
-    gap: var(--gap-lg);
-    align-items: start;
-  }
-
-  .tabs.tabs-team .tabs-team-avatar {
-    flex-shrink: 0;
-  }
-
-  .tabs.tabs-team .tabs-team-text {
-    flex: 1;
   }
 }

@@ -2,9 +2,9 @@
 /* global WebImporter */
 
 /**
- * Parser for tabs-team variant.
- * Base: tabs. Source: https://wknd-adventures.com/about.html
- * Selector: section.section:has(.tab-menu)
+ * Parser for tabs with team-profile nested blocks.
+ * Source: https://wknd-adventures.com/about.html
+ * Selector: section.section:has(.tab-menu):has(.profile-circle)
  * Generated: 2026-03-25
  */
 export default function parse(element, { document }) {
@@ -18,51 +18,61 @@ export default function parse(element, { document }) {
     const tabLabel = document.createElement('div');
     tabLabel.textContent = button.textContent.trim();
 
-    const tabContent = document.createElement('div');
+    // Build a nested Team Profile block inside this tab panel
     const pane = tabPanes[i];
+    const profileCells = [];
+
     if (pane) {
-      // Profile image
+      // Avatar column
+      const avatarCol = document.createElement('div');
       const profileImg = pane.querySelector('.profile-circle img');
       if (profileImg) {
-        const img = profileImg.cloneNode(true);
-        tabContent.appendChild(img);
+        avatarCol.appendChild(profileImg.cloneNode(true));
       }
-
-      // Name
       const name = pane.querySelector('.profile-name');
       if (name) {
-        const h3 = document.createElement('h3');
-        h3.textContent = name.textContent.trim();
-        tabContent.appendChild(h3);
+        const nameP = document.createElement('p');
+        nameP.textContent = name.textContent.trim();
+        avatarCol.appendChild(nameP);
       }
 
-      // Role
+      // Text column
+      const textCol = document.createElement('div');
       const role = pane.querySelector('.profile-name + p');
       if (role) {
         const em = document.createElement('em');
         em.textContent = role.textContent.trim();
         const p = document.createElement('p');
         p.appendChild(em);
-        tabContent.appendChild(p);
+        textCol.appendChild(p);
       }
-
-      // Bio paragraphs
       const bioContainer = pane.querySelector('.team-profile-bio');
       if (bioContainer) {
         const paragraphs = bioContainer.querySelectorAll('p');
         paragraphs.forEach((para) => {
           const newP = document.createElement('p');
           newP.textContent = para.textContent.trim();
-          tabContent.appendChild(newP);
+          textCol.appendChild(newP);
         });
       }
+
+      profileCells.push([avatarCol, textCol]);
     }
+
+    // Create a nested Team Profile block
+    const nestedBlock = WebImporter.Blocks.createBlock(document, {
+      name: 'Team Profile',
+      cells: profileCells,
+    });
+
+    const tabContent = document.createElement('div');
+    tabContent.appendChild(nestedBlock);
 
     cells.push([tabLabel, tabContent]);
   });
 
   const block = WebImporter.Blocks.createBlock(document, {
-    name: 'Tabs (tabs-team)',
+    name: 'Tabs',
     cells,
   });
   element.replaceWith(block);
