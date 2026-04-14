@@ -24,7 +24,7 @@
   display: block;
 }
 
-@media (width >= 900px) {
+@media (width >= 768px) {
   .columns > div {
     align-items: center;
     flex-direction: unset;
@@ -61,7 +61,7 @@
   display: block;
 }
 
-@media (width >= 900px) {
+@media (width >= 768px) {
   .columns.columns-about > div {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -159,7 +159,7 @@
   display: none;
 }
 
-@media (width >= 600px) {
+@media (width >= 768px) {
   .columns.columns-promo > div {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -210,7 +210,7 @@
   font-size: var(--body-font-size-s);
 }
 
-@media (width >= 900px) {
+@media (width >= 768px) {
   .columns.columns-pullquote > div {
     display: grid;
     grid-template-columns: 1fr 2fr;

@@ -95,7 +95,7 @@
   box-shadow: 0 0 0 var(--accent-color);
 }
 
-@media (width >= 600px) {
+@media (width >= 768px) {
   .featured-article .featured-article-content p:last-child {
     text-align: right;
   }
@@ -103,9 +103,7 @@
   .featured-article .featured-article-content p:last-child a:any-link {
     display: inline-flex;
   }
-}
 
-@media (width >= 900px) {
   .featured-article > div {
     display: grid;
     grid-template-columns: 1fr 1fr;

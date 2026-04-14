@@ -2,7 +2,7 @@ import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { BRAND_LOGO, getContentRoot } from '../../scripts/scripts.js';
 
-const isDesktop = window.matchMedia('(min-width: 900px)');
+const isDesktop = window.matchMedia('(min-width: 1024px)');
 
 function closeAllPanels(nav) {
   nav.querySelectorAll('.nav-megamenu-trigger').forEach((trigger) => {

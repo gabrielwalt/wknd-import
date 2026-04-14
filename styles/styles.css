@@ -117,18 +117,8 @@
   src: local('Arial Black'), local('Arial');
 }
 
-/* tablet */
-@media (width >= 600px) {
-  :root {
-    --heading-font-size-xxl: 40px;
-    --heading-font-size-xl: 32px;
-    --heading-font-size-l: 28px;
-    --heading-font-size-m: 20px;
-  }
-}
-
-/* desktop */
-@media (width >= 900px) {
+/* desktop — content reflow breakpoint */
+@media (width >= 768px) {
   :root {
     --body-font-size-m: 18px;
     --body-font-size-s: 16px;
@@ -439,7 +429,7 @@ a.button.accent {
 
 
 /* button groups — stack on mobile */
-@media (width < 600px) {
+@media (width < 768px) {
   .button-wrapper + .button-wrapper {
     margin-top: var(--gap-sm);
   }

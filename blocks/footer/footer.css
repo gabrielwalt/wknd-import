@@ -159,24 +159,9 @@ footer .footer-bottom p {
 
 
 /* ----------------------------------------------------------------
-   Tablet (≥ 600px) — 2-column grid
+   Desktop (≥ 768px) — 4-column grid
    ---------------------------------------------------------------- */
-@media (width >= 600px) {
-  footer .footer-top {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--gap-xl) var(--gap-2xl);
-  }
-
-  footer .footer-col-brand,
-  footer .footer-col:first-child {
-    grid-column: 1 / -1;
-  }
-}
-
-/* ----------------------------------------------------------------
-   Desktop (≥ 900px) — 4-column grid
-   ---------------------------------------------------------------- */
-@media (width >= 900px) {
+@media (width >= 768px) {
   footer .footer > div {
     padding: 0 var(--gap-lg);
     margin: 0 auto;

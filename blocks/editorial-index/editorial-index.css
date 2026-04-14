@@ -45,7 +45,7 @@
   line-height: 1.6;
 }
 
-@media (width >= 900px) {
+@media (width >= 768px) {
   .editorial-index > div {
     grid-template-columns: 80px 1fr;
     gap: var(--gap-2xl);

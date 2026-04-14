@@ -333,7 +333,7 @@ header .nav-subscribe:hover:any-link {
 /* ----------------------------------------------------------------
    Desktop overrides (≥ 900px)
    ---------------------------------------------------------------- */
-@media (width >= 900px) {
+@media (width >= 1024px) {
   header nav {
     display: flex;
     align-items: center;

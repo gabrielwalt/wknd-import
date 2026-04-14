@@ -176,21 +176,14 @@ main .hero a.button.secondary:any-link:hover {
   color: var(--dark-color);
 }
 
-@media (width >= 600px) {
+@media (width >= 768px) {
   .hero {
-    min-height: min(65vh, 500px);
-    padding: var(--gap-3xl) var(--gap-lg);
+    min-height: 65vh;
+    padding: var(--gap-3xl) var(--gap-xl);
   }
 
   .hero p:not(.tag-pill) {
     font-size: 20px;
-  }
-}
-
-@media (width >= 900px) {
-  .hero {
-    min-height: 65vh;
-    padding: var(--gap-3xl) var(--gap-xl);
   }
 
   .hero h1 {
@@ -276,7 +269,7 @@ main .hero a.button.secondary:any-link:hover {
   font-size: var(--body-font-size-s);
 }
 
-@media (width >= 600px) {
+@media (width >= 768px) {
   .hero.article {
     min-height: min(55vh, 420px);
   }

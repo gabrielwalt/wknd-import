@@ -50,7 +50,7 @@
   line-height: 1.6;
 }
 
-@media (width >= 900px) {
+@media (width >= 768px) {
   /* desktop: avatar left, text right */
   .team-profile > div {
     display: flex;

@@ -110,13 +110,13 @@ main .gallery-container > .default-content-wrapper a.button:hover {
 }
 
 /* --- Responsive --- */
-@media (width >= 900px) {
+@media (width >= 768px) {
   .gallery > div {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (width < 900px) {
+@media (width < 768px) {
   .gallery-container {
     --gallery-img-height: 200px;
     --gallery-wide-height: 240px;
