@@ -137,69 +137,149 @@ main .hero a.button:any-link {
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  box-shadow: 3px 3px 0 0 var(--btn-shadow, var(--dark-color));
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
 main .hero a.button:any-link:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 0 var(--btn-shadow, var(--dark-color));
   text-decoration: none;
 }
 
 main .hero a.button:any-link:active {
   transform: translateY(0);
-  box-shadow: 0 0 0 var(--btn-shadow, var(--dark-color));
 }
 
-/* primary button on hero — Vegas neon style */
+/* === VEGAS NEON: Primary — hot pink/gold gradient with pulsing glow === */
 main .hero a.button.primary:any-link {
-  background: linear-gradient(135deg, #ff2d95, #e8651a, #fc0);
-  background-size: 200% 200%;
-  border: 2px solid #ff2d95;
+  background: linear-gradient(270deg, #ff2d95, #ff6b35, #fc0, #ff2d95);
+  background-size: 300% 300%;
+  border: 2px solid rgb(255 255 255 / 40%);
   color: #fff;
-  text-shadow: 0 0 8px rgb(255 255 255 / 60%);
+  font-size: 15px;
+  text-shadow:
+    0 0 10px rgb(255 255 255 / 80%),
+    0 0 20px rgb(255 255 255 / 40%);
   box-shadow:
-    3px 3px 0 0 var(--btn-shadow, var(--dark-color)),
-    0 0 15px rgb(255 45 149 / 50%),
-    0 0 30px rgb(255 45 149 / 25%);
-  animation: vegas-shimmer 3s ease infinite;
+    0 0 10px rgb(255 45 149 / 60%),
+    0 0 25px rgb(255 45 149 / 35%),
+    0 0 50px rgb(255 45 149 / 15%),
+    inset 0 0 15px rgb(255 255 255 / 10%);
+  animation: vegas-gradient 4s ease infinite, vegas-pulse 2s ease-in-out infinite;
 }
 
-@keyframes vegas-shimmer {
+main .hero a.button.primary:any-link:hover {
+  transform: translate(-2px, -4px) scale(1.05);
+  filter: brightness(1.2) saturate(1.3);
+  box-shadow:
+    0 0 20px rgb(255 45 149 / 80%),
+    0 0 40px rgb(255 107 53 / 60%),
+    0 0 80px rgb(255 45 149 / 30%),
+    inset 0 0 20px rgb(255 255 255 / 15%);
+}
+
+main .hero a.button.primary:any-link:active {
+  box-shadow:
+    0 0 8px rgb(255 45 149 / 50%),
+    inset 0 0 10px rgb(255 255 255 / 10%);
+}
+
+/* === VEGAS NEON: Secondary — electric gold flicker outline === */
+main .hero a.button.secondary:any-link {
+  background: transparent;
+  border: 2px solid #fc0;
+  color: #fc0;
+  font-size: 15px;
+  text-shadow:
+    0 0 8px rgb(255 204 0 / 70%),
+    0 0 16px rgb(255 204 0 / 35%);
+  box-shadow:
+    0 0 8px rgb(255 204 0 / 40%),
+    0 0 20px rgb(255 204 0 / 20%),
+    inset 0 0 15px rgb(255 204 0 / 8%);
+  animation: vegas-neon-flicker 3s ease-in-out infinite;
+}
+
+main .hero a.button.secondary:any-link:hover {
+  transform: translate(-2px, -4px) scale(1.05);
+  background-color: rgb(255 204 0 / 12%);
+  border-color: #fff;
+  color: #fff;
+  text-shadow:
+    0 0 12px rgb(255 255 255 / 80%),
+    0 0 25px rgb(255 204 0 / 60%);
+  box-shadow:
+    0 0 15px rgb(255 204 0 / 70%),
+    0 0 35px rgb(255 204 0 / 40%),
+    0 0 70px rgb(255 204 0 / 15%),
+    inset 0 0 25px rgb(255 204 0 / 12%);
+}
+
+main .hero a.button.secondary:any-link:active {
+  box-shadow:
+    0 0 6px rgb(255 204 0 / 40%),
+    inset 0 0 8px rgb(255 204 0 / 6%);
+}
+
+/* === VEGAS KEYFRAMES === */
+
+@keyframes vegas-gradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-main .hero a.button.primary:any-link:hover {
-  filter: brightness(1.15);
-  box-shadow:
-    5px 5px 0 0 var(--btn-shadow, var(--dark-color)),
-    0 0 25px rgb(255 45 149 / 70%),
-    0 0 50px rgb(255 204 0 / 40%);
+@keyframes vegas-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 10px rgb(255 45 149 / 60%),
+      0 0 25px rgb(255 45 149 / 35%),
+      0 0 50px rgb(255 45 149 / 15%),
+      inset 0 0 15px rgb(255 255 255 / 10%);
+  }
+
+  50% {
+    box-shadow:
+      0 0 18px rgb(255 107 53 / 70%),
+      0 0 40px rgb(255 204 0 / 45%),
+      0 0 70px rgb(255 45 149 / 25%),
+      inset 0 0 20px rgb(255 255 255 / 15%);
+  }
 }
 
-/* secondary button on hero — Vegas neon outline */
-main .hero a.button.secondary:any-link {
-  background: transparent;
-  border: 2px solid #fc0;
-  color: #fc0;
-  text-shadow: 0 0 6px rgb(255 204 0 / 50%);
-  box-shadow:
-    3px 3px 0 0 var(--btn-shadow, var(--dark-color)),
-    0 0 12px rgb(255 204 0 / 30%),
-    inset 0 0 12px rgb(255 204 0 / 10%);
-}
+@keyframes vegas-neon-flicker {
+  0%,
+  100% {
+    box-shadow:
+      0 0 8px rgb(255 204 0 / 40%),
+      0 0 20px rgb(255 204 0 / 20%),
+      inset 0 0 15px rgb(255 204 0 / 8%);
+    opacity: 1;
+  }
 
-main .hero a.button.secondary:any-link:hover {
-  border-color: #fc0;
-  background-color: rgb(255 204 0 / 15%);
-  color: #fff;
-  box-shadow:
-    5px 5px 0 0 var(--btn-shadow, var(--dark-color)),
-    0 0 25px rgb(255 204 0 / 60%),
-    inset 0 0 20px rgb(255 204 0 / 20%);
+  18% {
+    opacity: 0.92;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  50% {
+    box-shadow:
+      0 0 14px rgb(255 204 0 / 55%),
+      0 0 30px rgb(255 204 0 / 30%),
+      inset 0 0 20px rgb(255 204 0 / 12%);
+  }
+
+  82% {
+    opacity: 0.95;
+  }
+
+  84% {
+    opacity: 1;
+  }
 }
 
 @media (width < 768px) {
