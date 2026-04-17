@@ -22,7 +22,7 @@ var CustomImportScript = (() => {
   __export(import_nav_exports, {
     default: () => import_nav_default
   });
-  var BASE = "/content/wknd/";
+  var BASE = "/";
   function rewriteHref(href) {
     if (!href) return href;
     try {
@@ -39,16 +39,14 @@ var CustomImportScript = (() => {
       const navbar = main.querySelector(".navbar");
       if (!navbar) return [];
       const result = document.createElement("div");
-      const brandSection = document.createElement("div");
       const logo = navbar.querySelector(".logo");
       const brandP = document.createElement("p");
       const brandA = document.createElement("a");
       brandA.href = rewriteHref(logo?.getAttribute("href") || "/");
       brandA.textContent = "WKND Adventures";
       brandP.appendChild(brandA);
-      brandSection.appendChild(brandP);
-      result.appendChild(brandSection);
-      const sectionsDiv = document.createElement("div");
+      result.appendChild(brandP);
+      result.appendChild(document.createElement("hr"));
       const topUl = document.createElement("ul");
       const menuItems = navbar.querySelectorAll(".nav-megamenu-item, .nav-menu-item");
       if (menuItems.length > 0) {
@@ -113,9 +111,8 @@ var CustomImportScript = (() => {
         const allLinks = navbar.querySelectorAll("a.nav-megamenu-link, a.nav-megamenu-article");
         console.log("Nav: no .nav-menu-item found, using static link fallback");
       }
-      sectionsDiv.appendChild(topUl);
-      result.appendChild(sectionsDiv);
-      const toolsSection = document.createElement("div");
+      result.appendChild(topUl);
+      result.appendChild(document.createElement("hr"));
       const subLink = navbar.querySelector(".button, .nav-subscribe");
       if (subLink) {
         const p = document.createElement("p");
@@ -125,9 +122,8 @@ var CustomImportScript = (() => {
         a.textContent = subLink.textContent.trim().replace(/\s+/g, " ");
         strong.appendChild(a);
         p.appendChild(strong);
-        toolsSection.appendChild(p);
+        result.appendChild(p);
       }
-      result.appendChild(toolsSection);
       return [{
         element: result,
         path: "/nav"
