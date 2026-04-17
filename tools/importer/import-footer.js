@@ -28,13 +28,11 @@ export default {
     const result = document.createElement('div');
 
     // === Section 1: Footer top (brand + link columns) ===
-    const topSection = document.createElement('div');
     const footerTop = footer.querySelector('.footer-top');
 
     if (footerTop) {
       const cols = footerTop.querySelectorAll(':scope > div');
       cols.forEach((col) => {
-        const colDiv = document.createElement('div');
         const logoEl = col.querySelector('.footer-logo');
 
         if (logoEl) {
@@ -44,13 +42,13 @@ export default {
           brandA.href = rewriteHref('/');
           brandA.textContent = 'WKND Adventures';
           brandP.appendChild(brandA);
-          colDiv.appendChild(brandP);
+          result.appendChild(brandP);
 
           const tagline = col.querySelector('p');
           if (tagline) {
             const tagP = document.createElement('p');
             tagP.textContent = tagline.textContent.trim();
-            colDiv.appendChild(tagP);
+            result.appendChild(tagP);
           }
         } else {
           // Link column: h4 heading + ul list
@@ -58,7 +56,7 @@ export default {
           if (h4) {
             const heading = document.createElement('h4');
             heading.textContent = h4.textContent.trim();
-            colDiv.appendChild(heading);
+            result.appendChild(heading);
           }
 
           const links = col.querySelectorAll('li a');
@@ -72,16 +70,16 @@ export default {
               li.appendChild(newA);
               ul.appendChild(li);
             });
-            colDiv.appendChild(ul);
+            result.appendChild(ul);
           }
         }
-        topSection.appendChild(colDiv);
       });
     }
-    result.appendChild(topSection);
+
+    // --- Section break ---
+    result.appendChild(document.createElement('hr'));
 
     // === Section 2: Footer bottom (copyright) ===
-    const bottomSection = document.createElement('div');
     const footerBottom = footer.querySelector('.footer-bottom');
 
     if (footerBottom) {
@@ -89,10 +87,9 @@ export default {
       paragraphs.forEach((p) => {
         const newP = document.createElement('p');
         newP.textContent = p.textContent.trim();
-        bottomSection.appendChild(newP);
+        result.appendChild(newP);
       });
     }
-    result.appendChild(bottomSection);
 
     return [{
       element: result,

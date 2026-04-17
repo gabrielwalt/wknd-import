@@ -22,7 +22,7 @@ var CustomImportScript = (() => {
   __export(import_footer_exports, {
     default: () => import_footer_default
   });
-  var BASE = "/content/wknd/";
+  var BASE = "/";
   function rewriteHref(href) {
     if (!href) return href;
     try {
@@ -39,12 +39,10 @@ var CustomImportScript = (() => {
       const footer = main.querySelector(".footer");
       if (!footer) return [];
       const result = document.createElement("div");
-      const topSection = document.createElement("div");
       const footerTop = footer.querySelector(".footer-top");
       if (footerTop) {
         const cols = footerTop.querySelectorAll(":scope > div");
         cols.forEach((col) => {
-          const colDiv = document.createElement("div");
           const logoEl = col.querySelector(".footer-logo");
           if (logoEl) {
             const brandP = document.createElement("p");
@@ -52,19 +50,19 @@ var CustomImportScript = (() => {
             brandA.href = rewriteHref("/");
             brandA.textContent = "WKND Adventures";
             brandP.appendChild(brandA);
-            colDiv.appendChild(brandP);
+            result.appendChild(brandP);
             const tagline = col.querySelector("p");
             if (tagline) {
               const tagP = document.createElement("p");
               tagP.textContent = tagline.textContent.trim();
-              colDiv.appendChild(tagP);
+              result.appendChild(tagP);
             }
           } else {
             const h4 = col.querySelector("h4");
             if (h4) {
               const heading = document.createElement("h4");
               heading.textContent = h4.textContent.trim();
-              colDiv.appendChild(heading);
+              result.appendChild(heading);
             }
             const links = col.querySelectorAll("li a");
             if (links.length > 0) {
@@ -77,24 +75,21 @@ var CustomImportScript = (() => {
                 li.appendChild(newA);
                 ul.appendChild(li);
               });
-              colDiv.appendChild(ul);
+              result.appendChild(ul);
             }
           }
-          topSection.appendChild(colDiv);
         });
       }
-      result.appendChild(topSection);
-      const bottomSection = document.createElement("div");
+      result.appendChild(document.createElement("hr"));
       const footerBottom = footer.querySelector(".footer-bottom");
       if (footerBottom) {
         const paragraphs = footerBottom.querySelectorAll("p");
         paragraphs.forEach((p) => {
           const newP = document.createElement("p");
           newP.textContent = p.textContent.trim();
-          bottomSection.appendChild(newP);
+          result.appendChild(newP);
         });
       }
-      result.appendChild(bottomSection);
       return [{
         element: result,
         path: "/footer"

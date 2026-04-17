@@ -29,18 +29,18 @@ export default {
     const result = document.createElement('div');
 
     // === Section 1: Brand ===
-    const brandSection = document.createElement('div');
     const logo = navbar.querySelector('.logo');
     const brandP = document.createElement('p');
     const brandA = document.createElement('a');
     brandA.href = rewriteHref(logo?.getAttribute('href') || '/');
     brandA.textContent = 'WKND Adventures';
     brandP.appendChild(brandA);
-    brandSection.appendChild(brandP);
-    result.appendChild(brandSection);
+    result.appendChild(brandP);
+
+    // --- Section break ---
+    result.appendChild(document.createElement('hr'));
 
     // === Section 2: Navigation sections (megamenu) ===
-    const sectionsDiv = document.createElement('div');
     const topUl = document.createElement('ul');
 
     // Get megamenu panels from the rendered page
@@ -119,11 +119,12 @@ export default {
       console.log('Nav: no .nav-menu-item found, using static link fallback');
     }
 
-    sectionsDiv.appendChild(topUl);
-    result.appendChild(sectionsDiv);
+    result.appendChild(topUl);
+
+    // --- Section break ---
+    result.appendChild(document.createElement('hr'));
 
     // === Section 3: Tools (Subscribe button) ===
-    const toolsSection = document.createElement('div');
     const subLink = navbar.querySelector('.button, .nav-subscribe');
     if (subLink) {
       const p = document.createElement('p');
@@ -133,9 +134,8 @@ export default {
       a.textContent = subLink.textContent.trim().replace(/\s+/g, ' ');
       strong.appendChild(a);
       p.appendChild(strong);
-      toolsSection.appendChild(p);
+      result.appendChild(p);
     }
-    result.appendChild(toolsSection);
 
     return [{
       element: result,
